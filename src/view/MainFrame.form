@@ -29,10 +29,10 @@
                   <Component id="requestButton" alignment="0" max="32767" attributes="0"/>
                   <Component id="paymentButton" alignment="0" max="32767" attributes="0"/>
                   <Component id="billButton" alignment="0" max="32767" attributes="0"/>
-                  <Component id="dashboardButton" alignment="1" max="32767" attributes="0"/>
                   <Component id="customerButton" alignment="1" max="32767" attributes="0"/>
                   <Component id="waterMeterButton" alignment="1" max="32767" attributes="0"/>
                   <Component id="usageButton" alignment="1" max="32767" attributes="0"/>
+                  <Component id="dashboardButton" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Component id="mainContent" min="-2" max="-2" attributes="0"/>
