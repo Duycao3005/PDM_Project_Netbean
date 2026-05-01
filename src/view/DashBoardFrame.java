@@ -19,14 +19,20 @@ public class DashBoardFrame extends javax.swing.JFrame {
             service.BillService billService = new service.BillService();
             service.PaymentService paymentService = new service.PaymentService();
             service.RequestService requestService = new service.RequestService();
+            int totalBills = billService.getTotalBillCount();
+            int unpaidBills = billService.getUnpaidBillCount();
             
             // Cập nhật các con số cũ
             jLabel5.setText(String.valueOf(customerService.getCustomerCount()));
-            jLabel7.setText(String.valueOf(billService.getUnpaidCount()));
+            lblTotalBills.setText(String.valueOf(billService.getUnpaidCount()));
             
             // Cập nhật Revenue (Định dạng số tiền có dấu $)
             double revenue = paymentService.getTotalRevenue();
             jLabel6.setText("$" + String.format("%.2f", revenue));
+            
+            lblTotalBills.setText(totalBills + " Bills Paid");
+            lblUnpaidBills.setText(unpaidBills + " Unpaid");
+            lblUnpaidBills.setForeground(java.awt.Color.RED);
             
             // Cập nhật Pending Requests
             jLabel8.setText(String.valueOf(requestService.getPendingRequestCount()));
@@ -70,8 +76,9 @@ public class DashBoardFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        lblTotalBills = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        lblUnpaidBills = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,9 +94,11 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
         jLabel6.setText("jLabel6");
 
-        jLabel7.setText("jLabel7");
+        lblTotalBills.setText("jLabel7");
 
         jLabel8.setText("jLabel8");
+
+        lblUnpaidBills.setText("jLabel7");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,10 +118,13 @@ public class DashBoardFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblTotalBills)
+                                .addGap(31, 31, 31)
+                                .addComponent(lblUnpaidBills))
                             .addComponent(jLabel6)
                             .addComponent(jLabel5))
-                        .addGap(117, 124, Short.MAX_VALUE))))
+                        .addGap(56, 56, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,7 +140,8 @@ public class DashBoardFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel7))
+                    .addComponent(lblTotalBills)
+                    .addComponent(lblUnpaidBills))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -171,7 +184,8 @@ public class DashBoardFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel lblTotalBills;
+    private javax.swing.JLabel lblUnpaidBills;
     // End of variables declaration//GEN-END:variables
 }

@@ -10,6 +10,42 @@ import model.Bill;
 
 public class BillDao {
 
+    public int getTotalBillCount() {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM bill WHERE status = 'Paid'";
+        
+        try (Connection conn = JDBCConnection.getJDBCConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                count = rs.getInt(1); // Lấy con số kết quả từ SQL
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+    // Hàm đếm số hóa đơn CHƯA thanh toán
+    public int getUnpaidBillCount() {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM bill WHERE status = 'Unpaid'";
+        
+        try (Connection conn = JDBCConnection.getJDBCConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+    
     // 1. Lấy toàn bộ Hóa đơn (Đã chuyển thành List<Bill> thay vì ArrayList<String>)
     public List<Bill> getAllBill() {
         List<Bill> list = new ArrayList<>();

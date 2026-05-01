@@ -14,7 +14,15 @@ public class RequestService {
     public RequestService() {
         this.requestDao = new RequestDao();
     }
-
+    
+    public List<Request> searchRequests(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllRequests();
+        }
+        // Gọi hàm search từ DAO (Bạn cần tạo hàm này trong RequestDao)
+        return requestDao.searchRequests(keyword.trim());
+    }
+    
     public List<Request> getAllRequests() {
         // Kiểm tra file RequestDao xem bạn đặt là getAllRequest() hay getAllRequests() nhé
         return requestDao.getAllRequest();
@@ -45,6 +53,14 @@ public class RequestService {
         r.setStatus(status);
         r.setDateCreated(java.sql.Date.valueOf(dateCreated));
         // Khi mới thêm yêu cầu, ngày xử lý (dateResolved) mặc định là null nên không cần set
+        try {
+            // Đảm bảo định dạng String là YYYY-MM-DD
+            r.setDateCreated(java.sql.Date.valueOf(dateCreated));
+        } catch (IllegalArgumentException e) {
+            System.err.println("Lỗi định dạng ngày tháng: " + e.getMessage());
+            // Có thể gán ngày hiện tại làm mặc định nếu lỗi
+            r.setDateCreated(new java.sql.Date(System.currentTimeMillis()));
+        }
 
         requestDao.addRequest(r);
     }

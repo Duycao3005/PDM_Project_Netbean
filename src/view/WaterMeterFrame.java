@@ -18,6 +18,7 @@ public class WaterMeterFrame extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(WaterMeterFrame.class.getName());
     WaterMeterService waterMeterService;
     DefaultTableModel defaultTableModel;
+    private javax.swing.table.TableRowSorter<DefaultTableModel> rowSorter; // <--- THÊM DÒNG NÀY
     /**
      * Creates new form WaterMeterFrame1
      */
@@ -40,6 +41,9 @@ public class WaterMeterFrame extends javax.swing.JFrame {
         defaultTableModel.addColumn("Ngày lắp đặt");
         defaultTableModel.addColumn("Loại đồng hồ");
         defaultTableModel.addColumn("Trạng thái");
+        
+        rowSorter = new javax.swing.table.TableRowSorter<>(defaultTableModel);
+        jTable1.setRowSorter(rowSorter);
 
         // Gọi hàm đổ dữ liệu
         setTableData(waterMeterService.getAllMeter());
@@ -74,6 +78,8 @@ public class WaterMeterFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtSearch = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,15 +99,23 @@ public class WaterMeterFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Update");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setText("Delete");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         addButton.setText("ADD");
         addButton.addActionListener(this::addButtonActionPerformed);
-        jButton1.addActionListener(this::updateButtonActionPerformed);
-        jButton2.addActionListener(this::deleteButtonActionPerformed);
 
         jLabel1.setText("REQUEST PANEL");
+
+        jLabel2.setText("Search:");
+
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -121,14 +135,21 @@ public class WaterMeterFrame extends javax.swing.JFrame {
                                 .addComponent(addButton))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(191, 191, 191)
-                        .addComponent(jLabel1)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel1)
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -136,7 +157,7 @@ public class WaterMeterFrame extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(addButton)
                     .addComponent(jButton1))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -158,6 +179,25 @@ public class WaterMeterFrame extends javax.swing.JFrame {
     setTableData(waterMeterService.getAllMeter());
     }//GEN-LAST:event_addButtonActionPerformed
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        String text = txtSearch.getText().trim();
+        
+        if (text.length() == 0) {
+            rowSorter.setRowFilter(null); // Không gõ gì thì hiện tất cả
+        } else {
+            // Số 0 và 1 ở cuối là bí quyết: Nó bảo Java CHỈ tìm trong cột 0 (Mã đồng hồ) và cột 1 (Mã KH)
+            rowSorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + text, 0, 1));
+        }
+    }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        updateButtonActionPerformed(evt);// TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        deleteButtonActionPerformed(evt);// TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {
         int row = jTable1.getSelectedRow();
         if (row == -1) {
@@ -165,7 +205,9 @@ public class WaterMeterFrame extends javax.swing.JFrame {
             return;
         }
 
-        Object idObj = defaultTableModel.getValueAt(row, 0);
+        int modelRow = jTable1.convertRowIndexToModel(row);
+        
+        Object idObj = defaultTableModel.getValueAt(modelRow, 0);
         int id = Integer.parseInt(String.valueOf(idObj));
 
         WaterMeter found = null;
@@ -193,7 +235,9 @@ public class WaterMeterFrame extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Please select a meter to delete.");
             return;
         }
-        Object idObj = defaultTableModel.getValueAt(row, 0);
+        int modelRow = jTable1.convertRowIndexToModel(row);
+        
+        Object idObj = defaultTableModel.getValueAt(modelRow, 0);
         int id = Integer.parseInt(String.valueOf(idObj));
 
         int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Delete selected meter?", "Confirm", javax.swing.JOptionPane.YES_NO_OPTION);
@@ -233,7 +277,9 @@ public class WaterMeterFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

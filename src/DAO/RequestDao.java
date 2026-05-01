@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RequestDao {
+    private final String TABLE_NAME = "maintenance_request";
     
     //COUNT PENDING REQUEST
     public int countPendingRequests() {
@@ -133,5 +134,42 @@ public class RequestDao {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+    public List<Request> searchRequests(String keyword) {
+        List<Request> list = new ArrayList<>();
+        // Lưu ý: CAST sang CHAR để dùng LIKE cho ID
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE CAST(request_id AS CHAR) LIKE ? "
+                + "OR CAST(customer_id AS CHAR) LIKE ? "
+                + "OR request_type LIKE ? "
+                + "OR status LIKE ?";
+
+        try (Connection conn = JDBCConnection.getJDBCConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            String searchKey = "%" + keyword + "%";
+            for (int i = 1; i <= 4; i++) {
+                ps.setString(i, searchKey);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Request r = new Request();
+                    r.setRequestId(rs.getInt("request_id"));
+                    r.setCustomerId(rs.getInt("customer_id"));
+
+                    int empId = rs.getInt("employee_id");
+                    r.setEmployeeId(rs.wasNull() ? null : empId);
+
+                    r.setRequestType(rs.getString("request_type"));
+                    r.setDescription(rs.getString("description"));
+                    r.setStatus(rs.getString("status"));
+                    r.setDateCreated(rs.getDate("date_created"));
+                    r.setDateResolved(rs.getDate("date_resolved"));
+                    list.add(r);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

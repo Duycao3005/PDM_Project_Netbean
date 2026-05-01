@@ -8,6 +8,8 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.Payment;
 import service.PaymentService;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
 
 /**
  *
@@ -24,7 +26,15 @@ public class PaymentFrame extends javax.swing.JFrame {
     public PaymentFrame() {
         initComponents();
         paymentService = new PaymentService();
-
+        
+        tb1Payment.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                // Lấy text từ chính ô JTextField đang gõ
+                String query = tb1Payment.getText();
+                filterPayment(query);
+            }});
+        
         defaultTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -73,6 +83,8 @@ public class PaymentFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        tb1Payment = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -102,6 +114,8 @@ public class PaymentFrame extends javax.swing.JFrame {
 
         jLabel1.setText("PAYMENT PANEL");
 
+        jLabel2.setText("Search:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,14 +132,21 @@ public class PaymentFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(275, 275, 275)
-                        .addComponent(jLabel1)))
-                .addContainerGap(100, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addGap(109, 109, 109)
+                        .addComponent(jLabel2)
+                        .addGap(27, 27, 27)
+                        .addComponent(tb1Payment, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel1)
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(tb1Payment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -227,7 +248,21 @@ public class PaymentFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField tb1Payment;
     // End of variables declaration//GEN-END:variables
+private void filterPayment(String query) {
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(defaultTableModel);
+        jTable1.setRowSorter(sorter);
+
+        if (query == null || query.trim().isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            // (?i): Không phân biệt hoa thường
+            // 0, 1: Chỉ lọc dữ liệu tại cột index 0 và index 1
+            sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + query, 0, 1));
+        }
+    }
 }

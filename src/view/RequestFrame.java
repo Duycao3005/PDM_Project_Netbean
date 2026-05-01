@@ -5,6 +5,7 @@
 package view;
 
 import java.util.List;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import model.Request;
 import service.RequestService;
@@ -46,6 +47,14 @@ public class RequestFrame extends javax.swing.JFrame {
 
        
         setTableData(requestService.getAllRequests());
+        txtSearchPayment.addKeyListener(new java.awt.event.KeyAdapter() {
+                @Override
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    String keyword = txtSearchPayment.getText().trim();
+                    List<Request> result = requestService.searchRequests(keyword);
+                    setTableData(result);
+                }
+            });
     }
     private void setTableData(List<Request> requests) {
         defaultTableModel.setRowCount(0); // Xóa dữ liệu cũ
@@ -79,6 +88,8 @@ public class RequestFrame extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtSearchPayment = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -106,6 +117,8 @@ public class RequestFrame extends javax.swing.JFrame {
 
         jLabel1.setText("REQUEST PANEL");
 
+        jLabel2.setText("Search");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -124,14 +137,21 @@ public class RequestFrame extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(293, 293, 293)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1)
+                        .addGap(97, 97, 97)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(52, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel1)
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
@@ -139,7 +159,7 @@ public class RequestFrame extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(addButton)
                     .addComponent(jButton2))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         pack();
@@ -158,6 +178,7 @@ public class RequestFrame extends javax.swing.JFrame {
     
     // Hiển thị - Lúc này người dùng không thể bấm ra ngoài cho đến khi đóng form này
     addDialog.setVisible(true);
+    setTableData(requestService.getAllRequests());
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -231,7 +252,9 @@ public class RequestFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtSearchPayment;
     // End of variables declaration//GEN-END:variables
 }

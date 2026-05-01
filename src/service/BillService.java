@@ -6,6 +6,8 @@ import DAO.BillDao;
 
 public class BillService {
     private BillDao billDao;
+    
+    
 
     public BillService() {
         this.billDao = new BillDao();
@@ -29,4 +31,12 @@ public class BillService {
     
     public int getUnpaidCount() { 
         return billDao.countUnpaidBills(); }
+    
+    // Gọi hàm đếm từ DAO
+    public int getTotalBillCount() {
+        return billDao.getTotalBillCount();
+    }
+    public int getUnpaidBillCount() {
+        return billDao.getUnpaidBillCount();
+    }
 }
