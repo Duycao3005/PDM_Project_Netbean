@@ -9,6 +9,9 @@ package view;
  * @author ThinkPad
  */
 public class DashBoardFrame extends javax.swing.JFrame {
+
+    
+    
     
     public void refreshStatistics() {
         try {

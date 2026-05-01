@@ -4,14 +4,14 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import java.sql.DriverManager;
 
-public class Main2 extends javax.swing.JFrame {
+public class LoginFrame extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Main2.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginFrame.class.getName());
 
     /**
      * Creates new form Main
      */
-    public Main2() {
+    public LoginFrame() {
         initComponents();
         edtUsername.setBackground(new java.awt.Color(245, 247, 250)); // nền xám nhẹ
         edtUsername.setBorder(
@@ -238,11 +238,11 @@ public class Main2 extends javax.swing.JFrame {
                 // Nếu có quyền (đăng nhập đúng)
                 this.dispose(); // Đóng màn hình Login
                 
-                if ("ADMIN".equalsIgnoreCase(role)) {
+                if ("STAFF".equalsIgnoreCase(role)) {
                     new view.MainFrame().setVisible(true); // Mở giao diện Admin
-                } else {
+                } else{
                     // new view.UserMainFrame().setVisible(true); // Mở giao diện User (sau này bạn tạo)
-                    new view.MainFrame().setVisible(true); // Tạm thời dùng chung để test
+                    new view.CustomerMainFrame(username).setVisible(true); // Tạm thời dùng chung để test
                 }
             } else {
                 // Đăng nhập sai
@@ -281,7 +281,7 @@ public class Main2 extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Main2().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new LoginFrame().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

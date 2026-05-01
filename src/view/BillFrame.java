@@ -48,6 +48,8 @@ public class BillFrame extends javax.swing.JFrame {
        
         setTableData(billService.getAllBills());
     }
+
+    
     private void setTableData(List<Bill> bills) {
         // Xóa sạch hàng cũ
         defaultTableModel.setRowCount(0); 

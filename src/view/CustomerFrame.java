@@ -18,6 +18,7 @@ public class CustomerFrame extends javax.swing.JFrame {
     // Khai báo biến
     CustomerService customerService;
     DefaultTableModel defaultTableModel;
+    private javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> rowSorter;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CustomerFrame.class.getName());
         
     /**
@@ -37,7 +38,9 @@ public class CustomerFrame extends javax.swing.JFrame {
 
         // Gán Model cho bảng jTable1
         jTable1.setModel(defaultTableModel);
-
+        rowSorter = new javax.swing.table.TableRowSorter<>(defaultTableModel);
+        jTable1.setRowSorter(rowSorter);
+        
         // Thêm các cột
         defaultTableModel.addColumn("Mã KH");
         defaultTableModel.addColumn("Họ Tên");
@@ -79,6 +82,8 @@ public class CustomerFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         addButton = new javax.swing.JButton();
+        txtSearch = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -104,9 +109,19 @@ public class CustomerFrame extends javax.swing.JFrame {
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setText("Update");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         addButton.setText("ADD");
         addButton.addActionListener(this::addButtonActionPerformed);
+
+        txtSearch.addActionListener(this::txtSearchActionPerformed);
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
+        jLabel2.setText("Search:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,20 +135,26 @@ public class CustomerFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(addButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 47, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(262, 262, 262)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 47, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
@@ -148,7 +169,39 @@ public class CustomerFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        // 1. Lấy vị trí dòng mà người dùng đang click chọn trên bảng
+        // LƯU Ý: Đổi 'jTable1' thành tên cái bảng của bạn nhé (ví dụ: tblCustomer)
+        int selectedRow = jTable1.getSelectedRow(); 
+
+        // Nếu chưa chọn dòng nào mà bấm Xóa thì báo lỗi
+        if (selectedRow == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng click chọn một khách hàng trên bảng để xóa!");
+            return;
+        }
+
+        // 2. Hiện hộp thoại hỏi xác nhận cho an toàn
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
+                "Bạn có chắc chắn muốn xóa khách hàng này không? Mọi hóa đơn liên quan cũng sẽ bị xóa theo!", 
+                "Xác nhận xóa", 
+                javax.swing.JOptionPane.YES_NO_OPTION);
+                
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            try {
+                // 3. Lấy mã CustomerID (thường nằm ở Cột 0 của bảng)
+                int customerId = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
+
+                // 4. Gọi Service để xóa dưới Database
+                customerService.deleteCustomer(customerId);
+
+                // 5. Báo thành công và Tự động làm mới bảng
+                javax.swing.JOptionPane.showMessageDialog(this, "Xóa khách hàng thành công!");
+                setTableData(customerService.getAllUsers()); // Nhớ đổi tên hàm này thành hàm vẽ bảng của bạn
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi xóa: " + e.getMessage());
+            }
+        }// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
@@ -167,6 +220,60 @@ public class CustomerFrame extends javax.swing.JFrame {
     // 4. Hiển thị Dialog lên
     addDialog.setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
+
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        String text = txtSearch.getText(); // Lấy chữ người dùng vừa gõ
+    
+    if (text.trim().length() == 0) {
+        rowSorter.setRowFilter(null); // Nếu xóa hết chữ, hiện lại toàn bộ bảng
+    } else {
+        // "(?i)" là "bí thuật" giúp tìm kiếm không phân biệt chữ hoa, chữ thường
+        rowSorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + text)); 
+    }
+    }//GEN-LAST:event_txtSearchKeyReleased
+
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int row = jTable1.getSelectedRow();
+    
+    // Kiểm tra xem người dùng đã chọn khách hàng nào chưa
+    if (row == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng trong bảng để cập nhật!", "Lỗi", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // Quan trọng: Vì bảng có dùng rowSorter (chức năng tìm kiếm), ta cần map đúng index từ View về Model
+    int modelRow = jTable1.convertRowIndexToModel(row);
+
+    // 2. Lấy dữ liệu từ DefaultTableModel dựa trên dòng đã chọn
+    int id = (int) defaultTableModel.getValueAt(modelRow, 0);
+    String name = (String) defaultTableModel.getValueAt(modelRow, 1);
+    String phone = (String) defaultTableModel.getValueAt(modelRow, 2);
+    String email = (String) defaultTableModel.getValueAt(modelRow, 3);
+    String address = (String) defaultTableModel.getValueAt(modelRow, 4);
+    String type = (String) defaultTableModel.getValueAt(modelRow, 5);
+
+    // 3. Khởi tạo UpdateCustomerFrame (giống như cách bạn làm với AddCustomerFrame)
+    java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+    java.awt.Frame parentFrame = null;
+    if (parentWindow instanceof java.awt.Frame) {
+        parentFrame = (java.awt.Frame) parentWindow;
+    }
+
+    UpdateCustomerFrame updateDialog = new UpdateCustomerFrame(parentFrame, true);
+    
+    // 4. Gọi hàm setCustomerData để truyền dữ liệu sang form Update
+    updateDialog.setCustomerData(id, name, phone, email, address, type);
+    
+    // 5. Hiển thị Dialog lên
+    updateDialog.setVisible(true);
+
+    // 6. Làm mới lại bảng sau khi form Update đóng lại (để hiển thị dữ liệu mới vừa sửa)
+    setTableData(customerService.getAllUsers());// TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,7 +305,9 @@ public class CustomerFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
