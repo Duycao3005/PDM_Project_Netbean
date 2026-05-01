@@ -206,11 +206,8 @@ public void setBillToUpdate(model.Bill bill) {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
         // 1. Lấy dữ liệu từ giao diện
-        // Bỏ qua Bill ID (jTextField1) vì database thường để AUTO_INCREMENT
-        
         int meterId = Integer.parseInt(jTextField2.getText().trim());
 
-        // Lấy Period từ 3 JComboBox (Ngày, Tháng, Năm)
         String day = jComboBox1.getSelectedItem().toString();
         String month = jComboBox2.getSelectedItem().toString();
         String year = jComboBox3.getSelectedItem().toString();
@@ -218,8 +215,7 @@ public void setBillToUpdate(model.Bill bill) {
 
         double totalAmount = Double.parseDouble(jTextField4.getText().trim());
 
-        // Lấy trạng thái từ JRadioButton
-        String status = "Unpaid"; // Mặc định nếu không chọn gì
+        String status = "Unpaid"; 
         if (jRadioButton1.isSelected()) {
             status = "Paid";
         } else if (jRadioButton2.isSelected()) {
@@ -233,14 +229,13 @@ public void setBillToUpdate(model.Bill bill) {
         newBill.setTotalAmount(totalAmount);
         newBill.setStatus(status);
 
-        // Lưu ý: Giao diện của bạn đang thiếu chỗ nhập Ngày xuất (issue_date) và Hạn chót (due_date).
-        // Tạm thời mình set issue_date là ngày hôm nay, và due_date là 30 ngày sau.
         long millis = System.currentTimeMillis();
         newBill.setIssueDate(new java.sql.Date(millis)); 
         newBill.setDueDate(new java.sql.Date(millis + (30L * 24 * 60 * 60 * 1000)));
 
-        // 3. Gọi Service để thêm vào Database
+        // 3. Gọi Service để Thêm hoặc Cập nhật vào Database
         service.BillService service = new service.BillService();
+        
         if (this.currentBillId == null) {
             // Chế độ THÊM MỚI
             service.addBill(newBill);
@@ -252,17 +247,13 @@ public void setBillToUpdate(model.Bill bill) {
             javax.swing.JOptionPane.showMessageDialog(this, "Cập nhật hóa đơn thành công!");
         }
 
-        // 4. Đóng form
-        this.dispose();
-
-        // 4. Báo thành công và đóng form
-        javax.swing.JOptionPane.showMessageDialog(this, "Thêm hóa đơn thành công!");
+        // 4. Đóng form (KHÔNG CÒN dòng thông báo dư thừa ở đây nữa)
         this.dispose(); 
 
     } catch (NumberFormatException e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số cho Meter ID và Total!", "Lỗi nhập liệu", javax.swing.JOptionPane.ERROR_MESSAGE);
     } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi thêm hóa đơn: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
     }    // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 

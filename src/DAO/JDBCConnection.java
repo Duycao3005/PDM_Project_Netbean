@@ -9,7 +9,7 @@ public class JDBCConnection {
     public static Connection getJDBCConnection() {
         final String url = "jdbc:mysql://localhost:3306/water_supply_manage_system";
         final String user = "root";
-        final String password = "Hbao09072006";
+        final String password = "Duy@14123005";
 
         try {
             // Với Driver 9.7.0 và Java 25, bạn có thể nạp trực tiếp thế này
