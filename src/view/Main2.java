@@ -1,9 +1,5 @@
 package view;
 
-import java.sql.*;
-import javax.swing.JOptionPane;
-import java.sql.DriverManager;
-
 public class Main2 extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Main2.class.getName());

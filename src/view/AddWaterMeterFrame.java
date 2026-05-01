@@ -4,6 +4,10 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
+import model.WaterMeter;
+import service.WaterMeterService;
+
 /**
  *
  * @author ThinkPad
@@ -12,6 +16,9 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddWaterMeterFrame.class.getName());
 
+    private WaterMeterService waterMeterService;
+    private WaterMeter editingMeter;
+
     /**
      * Creates new form AddWaterMeterFrame1
      */
@@ -19,6 +26,20 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         super(parent, modal); // Dòng này bắt buộc đứng đầu
         initComponents();
         this.setLocationRelativeTo(parent);
+    }
+
+    public AddWaterMeterFrame(java.awt.Frame parent, boolean modal, WaterMeterService service) {
+        super(parent, modal);
+        this.waterMeterService = service;
+        initComponents();
+        this.setLocationRelativeTo(parent);
+    }
+
+    public AddWaterMeterFrame(java.awt.Frame parent, boolean modal, WaterMeterService service, WaterMeter meter) {
+        this(parent, modal, service);
+        this.editingMeter = meter;
+        populateFieldsFromMeter();
+        jButton2.setText("UPDATE");
     }
 
     // 3. Hàm khởi tạo phụ để NetBeans Design không báo lỗi
@@ -80,6 +101,7 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         cancelButton.addActionListener(this::cancelButtonActionPerformed);
 
         jButton2.setText("ADD");
+        jButton2.addActionListener(this::addOrUpdateActionPerformed);
 
         jLabel1.setText("ADD WATER METER");
 
@@ -174,6 +196,62 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void addOrUpdateActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            if (waterMeterService == null) {
+                waterMeterService = new WaterMeterService();
+            }
+
+            WaterMeter m = (editingMeter != null) ? editingMeter : new WaterMeter();
+
+            // parse fields
+            int customerId = Integer.parseInt(jTextField2.getText().trim());
+
+            String type = "";
+            if (jRadioButton3.isSelected()) type = "Analog";
+            else if (jRadioButton4.isSelected()) type = "Digital";
+            else if (jRadioButton5.isSelected()) type = "Mechanical";
+
+            String status = "";
+            if (jRadioButton1.isSelected()) status = "Active";
+            else if (jRadioButton2.isSelected()) status = "Maintenance";
+
+            m.setCustomerId(customerId);
+            m.setMeterType(type);
+            m.setStatus(status);
+
+            if (editingMeter == null) {
+                waterMeterService.addMeter(m);
+                JOptionPane.showMessageDialog(this, "Meter added.");
+            } else {
+                waterMeterService.updateMeter(m);
+                JOptionPane.showMessageDialog(this, "Meter updated.");
+            }
+
+            this.dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numeric values for customer id.", "Validation", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, "Error adding/updating meter", ex);
+            JOptionPane.showMessageDialog(this, "Operation failed: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void populateFieldsFromMeter() {
+        if (editingMeter == null) return;
+        jTextField1.setText(String.valueOf(editingMeter.getMeterId()));
+        jTextField2.setText(String.valueOf(editingMeter.getCustomerId()));
+
+        String type = editingMeter.getMeterType();
+        if ("Analog".equalsIgnoreCase(type)) jRadioButton3.setSelected(true);
+        else if ("Digital".equalsIgnoreCase(type)) jRadioButton4.setSelected(true);
+        else if ("Mechanical".equalsIgnoreCase(type)) jRadioButton5.setSelected(true);
+
+        String status = editingMeter.getStatus();
+        if ("Active".equalsIgnoreCase(status)) jRadioButton1.setSelected(true);
+        else if ("Maintenance".equalsIgnoreCase(status)) jRadioButton2.setSelected(true);
+    }
 
     /**
      * @param args the command line arguments
