@@ -5,8 +5,9 @@
 package view;
 
 import java.util.List;
-import javax.swing.table.DefaultTableModel;
-import model.WaterUsage; 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel; 
+import model.WaterUsage;
 import service.UsageService;
 /**
  *
@@ -98,9 +99,10 @@ public class UsageFrame extends javax.swing.JFrame {
         label1.setText("Consumption");
 
         jButton1.setText("Delete");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        jButton1.addActionListener(this::jButton1ActionPerformedDelete);
 
         jButton2.setText("Update");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jButton3.setText("ADD");
         jButton3.addActionListener(this::jButton3ActionPerformed);
@@ -157,15 +159,65 @@ public class UsageFrame extends javax.swing.JFrame {
     }
 
     // 2. Gọi Dialog với tham số 'true' để khóa màn hình chính
-    AddUsageFrame addDialog = new AddUsageFrame(parentFrame, true);
-    
+    AddUsageFrame addDialog = new AddUsageFrame(parentFrame, true, usageService);
     // 3. Hiển thị
     addDialog.setVisible(true);
+    // Refresh table after dialog closed
+    setTableData(usageService.getAllUsage());
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        int row = jTable1.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a usage to update.");
+            return;
+        }
+
+        Object idObj = defaultTableModel.getValueAt(row, 0);
+        int id = Integer.parseInt(String.valueOf(idObj));
+
+        // find usage by id
+        WaterUsage found = null;
+        for (WaterUsage u : usageService.getAllUsage()) {
+            if (u.getUsageId() == id) {
+                found = u;
+                break;
+            }
+        }
+
+        if (found == null) {
+            JOptionPane.showMessageDialog(this, "Selected usage not found.");
+            return;
+        }
+
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame parentFrame = null;
+        if (parentWindow instanceof java.awt.Frame) parentFrame = (java.awt.Frame) parentWindow;
+
+        AddUsageFrame editDialog = new AddUsageFrame(parentFrame, true, usageService, found);
+        editDialog.setVisible(true);
+        setTableData(usageService.getAllUsage());
+    }
+
+    private void jButton1ActionPerformedDelete(java.awt.event.ActionEvent evt) {
+        int row = jTable1.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a usage to delete.");
+            return;
+        }
+        Object idObj = defaultTableModel.getValueAt(row, 0);
+        int id = Integer.parseInt(String.valueOf(idObj));
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Delete selected usage?", "Confirm", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) return;
+
+        usageService.deleteUsage(id);
+        setTableData(usageService.getAllUsage());
+    }
 
     /**
      * @param args the command line arguments

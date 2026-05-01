@@ -89,8 +89,10 @@ public class BillFrame extends javax.swing.JFrame {
         addButton.addActionListener(this::addButtonActionPerformed);
 
         jButton1.setText("Delete");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton3.setText("Update");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("BILL");
@@ -153,13 +155,71 @@ public class BillFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        // TODO add your handling code here:
+         // TODO add your handling code here:
         java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
     
     // Tạo Dialog và truyền true để bật Modal
     AddBillFrame addDialog = new AddBillFrame(parent, true);
     addDialog.setVisible(true);
+    setTableData(billService.getAllBills());
     }//GEN-LAST:event_addButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // 1. Lấy vị trí dòng đang được chọn trong bảng
+    int selectedRow = jTable1.getSelectedRow();
+    if (selectedRow == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn trong bảng để xóa!", "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // 2. Lấy Bill ID từ cột đầu tiên (cột 0) của dòng được chọn
+    int billId = (int) jTable1.getValueAt(selectedRow, 0);
+
+    // 3. Hiển thị hộp thoại xác nhận
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa hóa đơn mã " + billId + " không?", "Xác nhận xóa", javax.swing.JOptionPane.YES_NO_OPTION);
+    
+    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+        try {
+            // Gọi Service để xóa
+            billService.deleteBill(billId);
+            javax.swing.JOptionPane.showMessageDialog(this, "Xóa hóa đơn thành công!");
+            
+            // Refresh lại bảng
+            setTableData(billService.getAllBills()); 
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Không thể xóa hóa đơn này!\nChi tiết lỗi: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }// TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int selectedRow = jTable1.getSelectedRow();
+    if (selectedRow == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn trong bảng để sửa!", "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    // 2. Lấy toàn bộ dữ liệu từ dòng được chọn gói vào 1 đối tượng Bill
+    model.Bill selectedBill = new model.Bill();
+    selectedBill.setBillId((int) jTable1.getValueAt(selectedRow, 0));
+    selectedBill.setMeterId((int) jTable1.getValueAt(selectedRow, 1));
+    selectedBill.setBillingPeriod((String) jTable1.getValueAt(selectedRow, 2));
+    selectedBill.setIssueDate((java.sql.Date) jTable1.getValueAt(selectedRow, 3));
+    selectedBill.setDueDate((java.sql.Date) jTable1.getValueAt(selectedRow, 4));
+    selectedBill.setTotalAmount((double) jTable1.getValueAt(selectedRow, 5));
+    selectedBill.setStatus((String) jTable1.getValueAt(selectedRow, 6));
+
+    // 3. Mở form AddBillFrame nhưng gọi thêm hàm setBillToUpdate()
+    java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
+    AddBillFrame editDialog = new AddBillFrame(parent, true);
+    
+    // Truyền dữ liệu sang form
+    editDialog.setBillToUpdate(selectedBill); 
+    editDialog.setVisible(true);
+
+    // 4. Refresh lại bảng sau khi form sửa đóng lại
+    setTableData(billService.getAllBills());    // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

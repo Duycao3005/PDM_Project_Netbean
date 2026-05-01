@@ -10,6 +10,38 @@ package view;
  */
 public class AddBillFrame extends javax.swing.JDialog {
     
+    private Integer currentBillId = null;
+
+// Hàm này được gọi từ BillFrame để đẩy dữ liệu cũ lên form
+public void setBillToUpdate(model.Bill bill) {
+    this.currentBillId = bill.getBillId();
+    
+    // Đổi giao diện cho phù hợp với Update
+    jLabel1.setText("UPDATE BILL");
+    jButton2.setText("SAVE"); // Đổi chữ nút ADD thành SAVE
+    
+    // Điền dữ liệu cũ vào các ô nhập
+    jTextField2.setText(String.valueOf(bill.getMeterId()));
+    jTextField4.setText(String.valueOf(bill.getTotalAmount()));
+    
+    // Xử lý tách chuỗi Ngày/Tháng/Năm để đưa lên 3 JComboBox
+    if(bill.getBillingPeriod() != null && bill.getBillingPeriod().contains("/")) {
+        String[] parts = bill.getBillingPeriod().split("/");
+        if(parts.length == 3) {
+            jComboBox1.setSelectedItem(parts[0]); // Ngày
+            jComboBox2.setSelectedItem(parts[1]); // Tháng
+            jComboBox3.setSelectedItem(parts[2]); // Năm
+        }
+    }
+    
+    // Chọn trạng thái
+    if ("Paid".equalsIgnoreCase(bill.getStatus())) {
+        jRadioButton1.setSelected(true);
+    } else {
+        jRadioButton2.setSelected(true);
+    }
+}
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddBillFrame.class.getName());
 
     public AddBillFrame(java.awt.Frame parent, boolean modal) {
@@ -70,6 +102,7 @@ public class AddBillFrame extends javax.swing.JDialog {
         jLabel5.setText("Total:");
 
         jButton2.setText("ADD");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jLabel6.setText("Status:");
 
@@ -169,6 +202,69 @@ public class AddBillFrame extends javax.swing.JDialog {
  
     this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+        // 1. Lấy dữ liệu từ giao diện
+        // Bỏ qua Bill ID (jTextField1) vì database thường để AUTO_INCREMENT
+        
+        int meterId = Integer.parseInt(jTextField2.getText().trim());
+
+        // Lấy Period từ 3 JComboBox (Ngày, Tháng, Năm)
+        String day = jComboBox1.getSelectedItem().toString();
+        String month = jComboBox2.getSelectedItem().toString();
+        String year = jComboBox3.getSelectedItem().toString();
+        String period = day + "/" + month + "/" + year; 
+
+        double totalAmount = Double.parseDouble(jTextField4.getText().trim());
+
+        // Lấy trạng thái từ JRadioButton
+        String status = "Unpaid"; // Mặc định nếu không chọn gì
+        if (jRadioButton1.isSelected()) {
+            status = "Paid";
+        } else if (jRadioButton2.isSelected()) {
+            status = "Unpaid";
+        }
+
+        // 2. Tạo đối tượng Bill và set giá trị
+        model.Bill newBill = new model.Bill();
+        newBill.setMeterId(meterId);
+        newBill.setBillingPeriod(period);
+        newBill.setTotalAmount(totalAmount);
+        newBill.setStatus(status);
+
+        // Lưu ý: Giao diện của bạn đang thiếu chỗ nhập Ngày xuất (issue_date) và Hạn chót (due_date).
+        // Tạm thời mình set issue_date là ngày hôm nay, và due_date là 30 ngày sau.
+        long millis = System.currentTimeMillis();
+        newBill.setIssueDate(new java.sql.Date(millis)); 
+        newBill.setDueDate(new java.sql.Date(millis + (30L * 24 * 60 * 60 * 1000)));
+
+        // 3. Gọi Service để thêm vào Database
+        service.BillService service = new service.BillService();
+        if (this.currentBillId == null) {
+            // Chế độ THÊM MỚI
+            service.addBill(newBill);
+            javax.swing.JOptionPane.showMessageDialog(this, "Thêm hóa đơn thành công!");
+        } else {
+            // Chế độ CẬP NHẬT
+            newBill.setBillId(this.currentBillId); // Gắn ID cũ vào để Update
+            service.updateBill(newBill);
+            javax.swing.JOptionPane.showMessageDialog(this, "Cập nhật hóa đơn thành công!");
+        }
+
+        // 4. Đóng form
+        this.dispose();
+
+        // 4. Báo thành công và đóng form
+        javax.swing.JOptionPane.showMessageDialog(this, "Thêm hóa đơn thành công!");
+        this.dispose(); 
+
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số cho Meter ID và Total!", "Lỗi nhập liệu", javax.swing.JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi thêm hóa đơn: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }    // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -98,6 +98,8 @@ public class WaterMeterFrame extends javax.swing.JFrame {
 
         addButton.setText("ADD");
         addButton.addActionListener(this::addButtonActionPerformed);
+        jButton1.addActionListener(this::updateButtonActionPerformed);
+        jButton2.addActionListener(this::deleteButtonActionPerformed);
 
         jLabel1.setText("REQUEST PANEL");
 
@@ -149,11 +151,57 @@ public class WaterMeterFrame extends javax.swing.JFrame {
     }
 
     // 2. Tạo JDialog với tham số true (Modal)
-    AddWaterMeterFrame addDialog = new AddWaterMeterFrame(parentFrame, true);
+    AddWaterMeterFrame addDialog = new AddWaterMeterFrame(parentFrame, true, waterMeterService);
     
     // 3. Hiển thị (Lúc này MainFrame sẽ bị khóa)
     addDialog.setVisible(true);
+    setTableData(waterMeterService.getAllMeter());
     }//GEN-LAST:event_addButtonActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        int row = jTable1.getSelectedRow();
+        if (row == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a meter to update.");
+            return;
+        }
+
+        Object idObj = defaultTableModel.getValueAt(row, 0);
+        int id = Integer.parseInt(String.valueOf(idObj));
+
+        WaterMeter found = null;
+        for (WaterMeter m : waterMeterService.getAllMeter()) {
+            if (m.getMeterId() == id) { found = m; break; }
+        }
+
+        if (found == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Selected meter not found.");
+            return;
+        }
+
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        java.awt.Frame parentFrame = null;
+        if (parentWindow instanceof java.awt.Frame) parentFrame = (java.awt.Frame) parentWindow;
+
+        AddWaterMeterFrame editDialog = new AddWaterMeterFrame(parentFrame, true, waterMeterService, found);
+        editDialog.setVisible(true);
+        setTableData(waterMeterService.getAllMeter());
+    }
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        int row = jTable1.getSelectedRow();
+        if (row == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a meter to delete.");
+            return;
+        }
+        Object idObj = defaultTableModel.getValueAt(row, 0);
+        int id = Integer.parseInt(String.valueOf(idObj));
+
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Delete selected meter?", "Confirm", javax.swing.JOptionPane.YES_NO_OPTION);
+        if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
+
+        waterMeterService.deleteMeter(id);
+        setTableData(waterMeterService.getAllMeter());
+    }
 
     /**
      * @param args the command line arguments

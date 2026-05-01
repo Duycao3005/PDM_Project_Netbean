@@ -4,6 +4,12 @@
  */
 package view;
 
+import java.awt.event.ActionEvent;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
+import model.WaterUsage;
+import service.UsageService;
+
 /**
  *
  * @author ThinkPad
@@ -12,10 +18,29 @@ public class AddUsageFrame extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddUsageFrame.class.getName());
 
+    private UsageService usageService;
+    private WaterUsage editingUsage;
+
    public AddUsageFrame(java.awt.Frame parent, boolean modal) {
         super(parent, modal); // Dòng này ép Modal 100%
         initComponents();
         this.setLocationRelativeTo(parent);
+    }
+
+    // New constructor that accepts service (used by caller)
+    public AddUsageFrame(java.awt.Frame parent, boolean modal, UsageService usageService) {
+        super(parent, modal);
+        this.usageService = usageService;
+        initComponents();
+        this.setLocationRelativeTo(parent);
+    }
+
+    // Constructor for edit mode
+    public AddUsageFrame(java.awt.Frame parent, boolean modal, UsageService usageService, WaterUsage usage) {
+        this(parent, modal, usageService);
+        this.editingUsage = usage;
+        populateFieldsFromUsage();
+        jButton2.setText("UPDATE");
     }
 
     // 3. Constructor mặc định để NetBeans Design không lỗi
@@ -74,6 +99,7 @@ public class AddUsageFrame extends javax.swing.JDialog {
         cancelButton.addActionListener(this::cancelButtonActionPerformed);
 
         jButton2.setText("ADD");
+        jButton2.addActionListener(this::addOrUpdateActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,6 +185,67 @@ public class AddUsageFrame extends javax.swing.JDialog {
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
       this.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void addOrUpdateActionPerformed(ActionEvent evt) {
+        try {
+            if (usageService == null) {
+                usageService = new UsageService();
+            }
+
+            WaterUsage u = (editingUsage != null) ? editingUsage : new WaterUsage();
+
+            // parse fields
+            String meterText = jTextField2.getText().trim();
+            int meterId = Integer.parseInt(meterText);
+
+            int day = Integer.parseInt((String) jComboBox1.getSelectedItem());
+            int month = Integer.parseInt((String) jComboBox2.getSelectedItem());
+            int year = Integer.parseInt((String) jComboBox3.getSelectedItem());
+
+            LocalDate ld = LocalDate.of(year, month, day);
+            java.sql.Date readingDate = java.sql.Date.valueOf(ld);
+
+            double prev = Double.parseDouble(jTextField4.getText().trim());
+            double curr = Double.parseDouble(jTextField5.getText().trim());
+
+            u.setMeterId(meterId);
+            u.setReadingDate(readingDate);
+            u.setPreviousReading(prev);
+            u.setCurrentReading(curr);
+
+            if (editingUsage == null) {
+                usageService.addUsage(u);
+                JOptionPane.showMessageDialog(this, "Usage added.");
+            } else {
+                usageService.updateUsage(u);
+                JOptionPane.showMessageDialog(this, "Usage updated.");
+            }
+
+            this.dispose();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numeric values for meter and readings.", "Validation", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            logger.log(java.util.logging.Level.SEVERE, "Error adding/updating usage", ex);
+            JOptionPane.showMessageDialog(this, "Operation failed: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void populateFieldsFromUsage() {
+        if (editingUsage == null) return;
+        jTextField1.setText(String.valueOf(editingUsage.getUsageId()));
+        jTextField2.setText(String.valueOf(editingUsage.getMeterId()));
+
+        java.sql.Date d = editingUsage.getReadingDate();
+        if (d != null) {
+            LocalDate ld = d.toLocalDate();
+            jComboBox1.setSelectedItem(String.valueOf(ld.getDayOfMonth()));
+            jComboBox2.setSelectedItem(String.valueOf(ld.getMonthValue()));
+            jComboBox3.setSelectedItem(String.valueOf(ld.getYear()));
+        }
+
+        jTextField4.setText(String.valueOf(editingUsage.getPreviousReading()));
+        jTextField5.setText(String.valueOf(editingUsage.getCurrentReading()));
+    }
 
     /**
      * @param args the command line arguments
