@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import model.Payment;
 import service.PaymentService;
 import javax.swing.table.TableRowSorter;
-import javax.swing.RowFilter;
+
 
 /**
  *
@@ -18,41 +18,77 @@ import javax.swing.RowFilter;
 public class PaymentFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PaymentFrame.class.getName());
-    PaymentService paymentService;
-    DefaultTableModel defaultTableModel;
-    /**
-     * Creates new form PaymentFrame1
-     */
-    public PaymentFrame() {
-        initComponents();
-        paymentService = new PaymentService();
+    private PaymentService paymentService;
+    private DefaultTableModel defaultTableModel;
+    private TableRowSorter<DefaultTableModel> rowSorter;
+   public PaymentFrame() {
+        initComponents(); // 1. Luôn để dòng này đầu tiên
         
-        tb1Payment.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                // Lấy text từ chính ô JTextField đang gõ
-                String query = tb1Payment.getText();
-                filterPayment(query);
-            }});
+        // Khởi tạo service (Đảm bảo class PaymentService đã tồn tại)
+        paymentService = new PaymentService(); 
         
+        // 2. Khởi tạo Model (Khóa không cho sửa ô trực tiếp)
         defaultTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Không cho sửa trực tiếp trên table
+                return false; 
             }
         };
 
+        // Gán model cho bảng
         jTable1.setModel(defaultTableModel);
 
-        // Thêm các cột cho bảng Thanh toán
+        // 3. THÊM CỘT (Bắt buộc thêm trước khi chỉnh độ rộng)
         defaultTableModel.addColumn("Payment ID");
         defaultTableModel.addColumn("Bill ID");
         defaultTableModel.addColumn("Payment Date");
         defaultTableModel.addColumn("Amount");
         defaultTableModel.addColumn("Payment Method");
 
-        // Đổ dữ liệu từ Service vào
+        // 4. Thiết lập RowSorter để tìm kiếm
+        rowSorter = new javax.swing.table.TableRowSorter<>(defaultTableModel);
+        jTable1.setRowSorter(rowSorter);
+
+        // --- KHỐI QUẢN LÝ GIAO DIỆN BẢNG ---
+        
+        // A. Căn giữa nội dung hàng
+        javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // B. Cấu hình độ rộng cột (Khóa MinWidth để không mất chữ)
+        jTable1.getColumnModel().getColumn(0).setMinWidth(100); // Payment ID
+        jTable1.getColumnModel().getColumn(1).setMinWidth(80);  // Bill ID
+        jTable1.getColumnModel().getColumn(2).setMinWidth(120); // Payment Date
+        jTable1.getColumnModel().getColumn(3).setMinWidth(100); // Amount
+        jTable1.getColumnModel().getColumn(4).setMinWidth(150); // Payment Method
+
+        // C. Chiều cao hàng
+        jTable1.setRowHeight(30);
+
+        // D. Căn giữa tiêu đề (Header)
+        javax.swing.table.DefaultTableCellRenderer headerRenderer = (javax.swing.table.DefaultTableCellRenderer) jTable1.getTableHeader().getDefaultRenderer();
+        headerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+        // --- KẾT THÚC KHỐI QUẢN LÝ ---
+
+        // 5. Đổ dữ liệu từ Service
         setTableData(paymentService.getAllPayments());
+
+        // 6. Gắn sự kiện tìm kiếm (Dùng biến txtSearch)
+        tb1Payment.addKeyListener(new java.awt.event.KeyAdapter() {
+    @Override
+    public void keyReleased(java.awt.event.KeyEvent evt) {
+        String text = tb1Payment.getText();
+                if (text.trim().isEmpty()) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    rowSorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+        });
     }
     private void setTableData(List<Payment> payments) {
         defaultTableModel.setRowCount(0); // Xóa trắng bảng trước khi nạp

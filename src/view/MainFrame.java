@@ -8,6 +8,7 @@ package view;
  *
  * @author ThinkPad
  */
+import com.formdev.flatlaf.FlatLightLaf;
 public class MainFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
@@ -17,6 +18,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
+        this.setTitle("Water Management system");
     }
     private void showView(javax.swing.JFrame frame) {
     // 1. Xóa toàn bộ những gì đang hiện ở vùng bên phải (mainContent)
@@ -83,7 +85,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         requestButton.setText("Request      ");
         requestButton.addActionListener(this::requestButtonActionPerformed);
-        jPanel1.add(requestButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, 99, -1));
+        jPanel1.add(requestButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 99, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imaga/Blue-Abstract-Background-For-You.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -91,7 +93,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setMaximumSize(new java.awt.Dimension(300, 300));
         jLabel1.setMinimumSize(new java.awt.Dimension(222, 222));
         jLabel1.setPreferredSize(new java.awt.Dimension(222, 333));
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 370));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-48, -30, 280, 480));
 
         mainContent.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -99,14 +101,14 @@ public class MainFrame extends javax.swing.JFrame {
         mainContent.setLayout(mainContentLayout);
         mainContentLayout.setHorizontalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 710, Short.MAX_VALUE)
+            .addGap(0, 750, Short.MAX_VALUE)
         );
         mainContentLayout.setVerticalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 330, Short.MAX_VALUE)
+            .addGap(0, 450, Short.MAX_VALUE)
         );
 
-        jPanel1.add(mainContent, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 710, 330));
+        jPanel1.add(mainContent, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 750, 450));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -153,25 +155,17 @@ public class MainFrame extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+          try {
+        // Sử dụng FlatLightLaf thay vì FlatDarkLaf
+        com.formdev.flatlaf.FlatLightLaf.setup();
+    } catch (Exception ex) {
+        java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, "Không thể tải Light Mode", ex);
+    }
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
+    // 2. Chạy ứng dụng
+    java.awt.EventQueue.invokeLater(() -> {
+        new MainFrame().setVisible(true);
+    });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

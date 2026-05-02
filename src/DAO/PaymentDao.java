@@ -10,14 +10,14 @@ import java.sql.SQLException;
 
 public class PaymentDao {
     
-    //SUM REVENUE
-    public double sumRevenue() {
+   public double sumRevenue() {
     try (java.sql.Connection conn = JDBCConnection.getJDBCConnection();
          java.sql.PreparedStatement ps = conn.prepareStatement("SELECT SUM(amount) FROM payment");
          java.sql.ResultSet rs = ps.executeQuery()) {
         if (rs.next()) return rs.getDouble(1);
     } catch (Exception e) { e.printStackTrace(); }
     return 0.0;}
+   
 
     // ================= GET ALL =================
     public List<Payment> getAllPayment() {

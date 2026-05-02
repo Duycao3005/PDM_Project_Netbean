@@ -23,47 +23,87 @@ public class UsageFrame extends javax.swing.JFrame {
     /**
      * Creates new form UsageFrame
      */
-    public UsageFrame() {
-        initComponents();
-        usageService = new UsageService(); 
-        
-        txtSearch.setText("");
+    private TableRowSorter<DefaultTableModel> rowSorter;
+   public UsageFrame() {
+    initComponents();
+    usageService = new UsageService(); 
 
-        // 2. Gắn sự kiện tìm kiếm
-        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                filterUsage(txtSearch.getText());
-            }
-        });
+    // 1. Khởi tạo Model và khóa chỉnh sửa trực tiếp
+    defaultTableModel = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
 
-        // 3. Khởi tạo Model cho bảng và khóa không cho sửa trực tiếp
-        defaultTableModel = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        
-        defaultTableModel = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+    jTable1.setModel(defaultTableModel);
 
-        jTable1.setModel(defaultTableModel);
+    // 2. Thêm các cột (Thêm đầy đủ trước khi chỉnh giao diện)
+    defaultTableModel.addColumn("Usage ID");
+    defaultTableModel.addColumn("Water Meter ID");
+    defaultTableModel.addColumn("Reading Date"); // Đổi Instaltion Date thành Reading Date cho đúng logic sử dụng
+    defaultTableModel.addColumn("Previous");
+    defaultTableModel.addColumn("Current");
+    defaultTableModel.addColumn("Consumption");
 
-        defaultTableModel.addColumn("Usage ID");
-        defaultTableModel.addColumn("Water Meter ID");
-        defaultTableModel.addColumn("Instaltion Date");
-        defaultTableModel.addColumn("Previous Reading");
-        defaultTableModel.addColumn("Current Reading");
-        defaultTableModel.addColumn("Consumption");
+    // 3. Thiết lập RowSorter để tìm kiếm
+    rowSorter = new javax.swing.table.TableRowSorter<>(defaultTableModel);
+    jTable1.setRowSorter(rowSorter);
 
-        
-        setTableData(usageService.getAllUsage());
+    // --- KHỐI QUẢN LÝ GIAO DIỆN BẢNG (Đồng bộ hệ thống) ---
+
+    // A. Căn giữa toàn bộ nội dung hàng
+    javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
     }
+
+    // B. Cấu hình độ rộng cột (Sử dụng setMinWidth để hiện đủ chữ tiêu đề)
+    jTable1.getColumnModel().getColumn(0).setMinWidth(80);
+    jTable1.getColumnModel().getColumn(0).setPreferredWidth(80);  // Usage ID
+
+    jTable1.getColumnModel().getColumn(1).setMinWidth(110);
+    jTable1.getColumnModel().getColumn(1).setPreferredWidth(110); // Water Meter ID
+
+    jTable1.getColumnModel().getColumn(2).setMinWidth(120);
+    jTable1.getColumnModel().getColumn(2).setPreferredWidth(120); // Reading Date
+
+    jTable1.getColumnModel().getColumn(3).setMinWidth(110);
+    jTable1.getColumnModel().getColumn(3).setPreferredWidth(110); // Previous
+
+    jTable1.getColumnModel().getColumn(4).setMinWidth(100);
+    jTable1.getColumnModel().getColumn(4).setPreferredWidth(100); // Current
+
+    jTable1.getColumnModel().getColumn(5).setMinWidth(110);
+    jTable1.getColumnModel().getColumn(5).setPreferredWidth(110); // Consumption
+
+    // C. Căn giữa tiêu đề bảng (Header)
+    if (jTable1.getTableHeader().getDefaultRenderer() instanceof javax.swing.table.DefaultTableCellRenderer) {
+        ((javax.swing.table.DefaultTableCellRenderer) jTable1.getTableHeader().getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.JLabel.CENTER);
+    }
+
+    // D. Tăng chiều cao hàng (Đồng bộ 30px)
+    jTable1.setRowHeight(30);
+
+    // --- KẾT THÚC KHỐI QUẢN LÝ ---
+
+    // 4. Đổ dữ liệu và gắn sự kiện tìm kiếm
+    setTableData(usageService.getAllUsage());
+    
+    txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+        @Override
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+            String text = txtSearch.getText();
+            if (text.trim().isEmpty()) {
+                rowSorter.setRowFilter(null);
+            } else {
+                rowSorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + text));
+            }
+        }
+    });
+}
     private void setTableData(List<WaterUsage> usages) {
         defaultTableModel.setRowCount(0);
 
@@ -143,15 +183,16 @@ public class UsageFrame extends javax.swing.JFrame {
                         .addComponent(jButton3))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(56, 56, 56)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addGap(299, 299, 299)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(98, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,12 +208,12 @@ public class UsageFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();

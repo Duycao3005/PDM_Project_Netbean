@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import model.Bill;
 import service.BillService;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,28 +18,38 @@ import service.BillService;
  */
 public class BillFrame extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BillFrame.class.getName());
-    BillService billService;
-    DefaultTableModel defaultTableModel;
-    /**
-     * Creates new form BillFrame1
-     */
-    public BillFrame() {
+   // Đảm bảo bạn đã khai báo biến này ở trên đầu class
+private BillService billService;
+private DefaultTableModel defaultTableModel;
+private TableRowSorter<DefaultTableModel> rowSorter;
+
+public BillFrame() {
         initComponents();
+        txtSearchBill.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+    public void insertUpdate(javax.swing.event.DocumentEvent e) {
+        filterBill(txtSearchBill.getText());
+    }
+
+    public void removeUpdate(javax.swing.event.DocumentEvent e) {
+        filterBill(txtSearchBill.getText());
+    }
+
+    public void changedUpdate(javax.swing.event.DocumentEvent e) {
+        filterBill(txtSearchBill.getText());
+    }
+});
         billService = new BillService();
 
-        // Khởi tạo table model, không cho sửa ô trực tiếp
-        defaultTableModel = new DefaultTableModel() {
+        // 1. Khởi tạo Model khóa chỉnh sửa
+        defaultTableModel = new javax.swing.table.DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; 
             }
         };
-
-        // Gán model cho bảng (Lưu ý: jTable1 phải đúng tên biến trong Design)
         jTable1.setModel(defaultTableModel);
 
-        // Thêm các cột cho bảng Hóa đơn
+        // 2. Thêm cột
         defaultTableModel.addColumn("Bill ID");
         defaultTableModel.addColumn("Water Meter ID");
         defaultTableModel.addColumn("Billing Period");
@@ -46,19 +57,22 @@ public class BillFrame extends javax.swing.JFrame {
         defaultTableModel.addColumn("Due Date");
         defaultTableModel.addColumn("Total Amount");
         defaultTableModel.addColumn("Status");
-        
-        setTableData(billService.getAllBills());
-        txtSearchBill.addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                filterBill(txtSearchBill.getText());
-            }
-        });
 
-       
+        // 3. Khởi tạo bộ lọc (RowSorter)
+        rowSorter = new javax.swing.table.TableRowSorter<>(defaultTableModel);
+        jTable1.setRowSorter(rowSorter);
+
+        // 4. Căn chỉnh giao diện
+        jTable1.setRowHeight(30);
+        javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+        // 5. Đổ dữ liệu
         setTableData(billService.getAllBills());
     }
-
     
     private void setTableData(List<Bill> bills) {
         // Xóa sạch hàng cũ
@@ -135,32 +149,32 @@ public class BillFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(addButton)
-                .addGap(232, 232, 232))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(47, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(16, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButton3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(addButton)
+                                .addGap(179, 179, 179))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
+                        .addGap(39, 39, 39)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(txtSearchBill, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(53, 53, 53))
+                .addGap(84, 84, 84))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(34, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
@@ -172,7 +186,7 @@ public class BillFrame extends javax.swing.JFrame {
                     .addComponent(jButton3)
                     .addComponent(jButton1)
                     .addComponent(addButton))
-                .addGap(18, 18, 18))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         pack();
@@ -191,13 +205,17 @@ public class BillFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // 1. Lấy vị trí dòng đang được chọn trong bảng
     int selectedRow = jTable1.getSelectedRow();
-    if (selectedRow == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Please select one bill in the table to delete!", "Announcement", javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+    selectedRow = jTable1.convertRowIndexToModel(selectedRow);
 
-    // 2. Lấy Bill ID từ cột đầu tiên (cột 0) của dòng được chọn
-    int billId = (int) jTable1.getValueAt(selectedRow, 0);
+
+if (selectedRow == -1) {
+    JOptionPane.showMessageDialog(this, "Please select one bill in the table to delete!");
+    return;
+}
+
+selectedRow = jTable1.convertRowIndexToModel(selectedRow);
+
+int billId = (int) defaultTableModel.getValueAt(selectedRow, 0);
 
     // 3. Hiển thị hộp thoại xác nhận
     int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Do you want to delete Bill  " + billId + "?", "Confirm delete", javax.swing.JOptionPane.YES_NO_OPTION);
@@ -222,16 +240,16 @@ public class BillFrame extends javax.swing.JFrame {
         javax.swing.JOptionPane.showMessageDialog(this, "Please select one bill in the table to update!", "Announcement", javax.swing.JOptionPane.WARNING_MESSAGE);
         return;
     }
-
+    selectedRow = jTable1.convertRowIndexToModel(selectedRow);
     // 2. Lấy toàn bộ dữ liệu từ dòng được chọn gói vào 1 đối tượng Bill
     model.Bill selectedBill = new model.Bill();
-    selectedBill.setBillId((int) jTable1.getValueAt(selectedRow, 0));
-    selectedBill.setMeterId((int) jTable1.getValueAt(selectedRow, 1));
-    selectedBill.setBillingPeriod((String) jTable1.getValueAt(selectedRow, 2));
-    selectedBill.setIssueDate((java.sql.Date) jTable1.getValueAt(selectedRow, 3));
-    selectedBill.setDueDate((java.sql.Date) jTable1.getValueAt(selectedRow, 4));
-    selectedBill.setTotalAmount((double) jTable1.getValueAt(selectedRow, 5));
-    selectedBill.setStatus((String) jTable1.getValueAt(selectedRow, 6));
+    selectedBill.setBillId((int) defaultTableModel.getValueAt(selectedRow, 0));
+    selectedBill.setMeterId((int) defaultTableModel.getValueAt(selectedRow, 1));
+selectedBill.setBillingPeriod((String) defaultTableModel.getValueAt(selectedRow, 2));
+selectedBill.setIssueDate((java.sql.Date) defaultTableModel.getValueAt(selectedRow, 3));
+selectedBill.setDueDate((java.sql.Date) defaultTableModel.getValueAt(selectedRow, 4));
+selectedBill.setTotalAmount((double) defaultTableModel.getValueAt(selectedRow, 5));
+selectedBill.setStatus((String) defaultTableModel.getValueAt(selectedRow, 6));
 
     // 3. Mở form AddBillFrame nhưng gọi thêm hàm setBillToUpdate()
     java.awt.Frame parent = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
@@ -262,13 +280,14 @@ public class BillFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new BillFrame().setVisible(true));
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
@@ -282,15 +301,10 @@ public class BillFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtSearchBill;
     // End of variables declaration//GEN-END:variables
 private void filterBill(String query) {
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(defaultTableModel);
-        jTable1.setRowSorter(tr);
-
-        if (query.trim().isEmpty()) {
-            tr.setRowFilter(null);
-        } else {
-            // (?i) : Không phân biệt hoa thường
-            // 0, 1 : Chỉ tìm kiếm trong cột index 0 (Mã HĐ) và index 1 (Mã Đồng Hồ)
-            tr.setRowFilter(RowFilter.regexFilter("(?i)" + query, 0, 1));
-        }
+    if (query.trim().isEmpty()) {
+        rowSorter.setRowFilter(null);
+    } else {
+        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + query, 0, 1));
     }
+}
 }

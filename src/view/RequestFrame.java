@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import model.Request;
 import service.RequestService;
+import javax.swing.RowFilter;
+import javax.swing.table.TableRowSorter;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,43 +22,68 @@ public class RequestFrame extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RequestFrame.class.getName());
     RequestService requestService;
     DefaultTableModel defaultTableModel;
+    private TableRowSorter<DefaultTableModel> rowSorter;
     /**
      * Creates new form RequestFrame1
      */
+    
     public RequestFrame() {
-        initComponents();
-        requestService = new RequestService();
+    initComponents();
 
-        defaultTableModel = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Không cho sửa trực tiếp trên bảng
-            }
-        };
+    requestService = new RequestService();
 
-        jTable1.setModel(defaultTableModel);
+    // 1. Model không cho edit
+    defaultTableModel = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    };
 
-        
-        defaultTableModel.addColumn("ID");
-        defaultTableModel.addColumn("Customer ID");
-        defaultTableModel.addColumn("Employee ID");
-        defaultTableModel.addColumn("Request Type");
-        defaultTableModel.addColumn("Description");
-        defaultTableModel.addColumn("Status");
-        defaultTableModel.addColumn("Created Date");
-        defaultTableModel.addColumn("Processed Date");
+    jTable1.setModel(defaultTableModel);
 
-       
-        setTableData(requestService.getAllRequests());
-        txtSearchPayment.addKeyListener(new java.awt.event.KeyAdapter() {
-                @Override
-                public void keyReleased(java.awt.event.KeyEvent evt) {
-                    String keyword = txtSearchPayment.getText().trim();
-                    List<Request> result = requestService.searchRequests(keyword);
-                    setTableData(result);
-                }
-            });
+    // 2. Thêm cột
+    defaultTableModel.addColumn("ID");
+    defaultTableModel.addColumn("Customer ID");
+    defaultTableModel.addColumn("Employee ID");
+    defaultTableModel.addColumn("Request Type");
+    defaultTableModel.addColumn("Description");
+    defaultTableModel.addColumn("Status");
+    defaultTableModel.addColumn("Created Date");
+    defaultTableModel.addColumn("Processed Date");
+
+    // 3. RowSorter (giống Bill)
+    rowSorter = new TableRowSorter<>(defaultTableModel);
+    jTable1.setRowSorter(rowSorter);
+
+    // 4. Căn giữa table
+    jTable1.setRowHeight(30);
+
+    javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
     }
+
+    // 5. Load dữ liệu
+    setTableData(requestService.getAllRequests());
+
+    // 6. Search realtime (DocumentListener)
+    txtSearchPayment.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        public void insertUpdate(javax.swing.event.DocumentEvent e) {
+            filterRequest(txtSearchPayment.getText());
+        }
+
+        public void removeUpdate(javax.swing.event.DocumentEvent e) {
+            filterRequest(txtSearchPayment.getText());
+        }
+
+        public void changedUpdate(javax.swing.event.DocumentEvent e) {
+            filterRequest(txtSearchPayment.getText());
+        }
+    });
+}
     private void setTableData(List<Request> requests) {
         defaultTableModel.setRowCount(0); // Xóa dữ liệu cũ
 
@@ -125,25 +153,24 @@ public class RequestFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(235, 235, 235)
-                        .addComponent(jButton2)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(addButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(50, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(addButton)
+                .addGap(206, 206, 206))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,12 +182,12 @@ public class RequestFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(9, 9, 9)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(addButton)
                     .addComponent(jButton2))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -190,11 +217,21 @@ public class RequestFrame extends javax.swing.JFrame {
             return;
         }
 
-        int id = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
-        String empId = jTable1.getValueAt(selectedRow, 2).toString();
-        String type = jTable1.getValueAt(selectedRow, 3).toString();
-        String desc = jTable1.getValueAt(selectedRow, 4).toString();
-        String status = jTable1.getValueAt(selectedRow, 5).toString();
+      
+
+if (selectedRow == -1) {
+    JOptionPane.showMessageDialog(this, "Select 1 row to update!");
+    return;
+}
+
+// FIX lệch index
+selectedRow = jTable1.convertRowIndexToModel(selectedRow);
+
+int id = (int) defaultTableModel.getValueAt(selectedRow, 0);
+String empId = defaultTableModel.getValueAt(selectedRow, 2).toString();
+String type = defaultTableModel.getValueAt(selectedRow, 3).toString();
+String desc = defaultTableModel.getValueAt(selectedRow, 4).toString();
+String status = defaultTableModel.getValueAt(selectedRow, 5).toString();
 
         UpdateRequestFrame updateFrame = new UpdateRequestFrame();
         updateFrame.setRequestData(id, type, desc, status, empId);
@@ -217,9 +254,24 @@ public class RequestFrame extends javax.swing.JFrame {
         }
 
         if (javax.swing.JOptionPane.showConfirmDialog(this, "Delete this request?", "Confirm", javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION) {
-            int id = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
-            requestService.deleteRequest(id);
-            setTableData(requestService.getAllRequests()); 
+           
+
+if (selectedRow == -1) {
+    JOptionPane.showMessageDialog(this, "Select this row to delete!");
+    return;
+}
+
+// FIX lệch index
+selectedRow = jTable1.convertRowIndexToModel(selectedRow);
+
+int id = (int) defaultTableModel.getValueAt(selectedRow, 0);
+
+if (JOptionPane.showConfirmDialog(this, "Delete this request?", "Confirm", JOptionPane.YES_NO_OPTION)
+        == JOptionPane.YES_OPTION) {
+
+    requestService.deleteRequest(id);
+    setTableData(requestService.getAllRequests());
+}
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -240,13 +292,20 @@ public class RequestFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new RequestFrame().setVisible(true));
     }
+    private void filterRequest(String query) {
+    if (query.trim().isEmpty()) {
+        rowSorter.setRowFilter(null);
+    } else {
+        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + query, 0, 1, 3, 5));
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

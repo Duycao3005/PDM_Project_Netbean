@@ -27,41 +27,90 @@ public class CustomerFrame extends javax.swing.JFrame {
      * Creates new form CustomerFrame
      */
     public CustomerFrame() {
-        initComponents(); // Phải gọi cái này đầu tiên
-        
-        customerService = new CustomerService();
+    initComponents(); 
+    
+    customerService = new CustomerService();
 
-        defaultTableModel = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; 
-            }
-        };
+    defaultTableModel = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; 
+        }
+    };
 
-        // Gán Model cho bảng jTable1
-        jTable1.setModel(defaultTableModel);
-        rowSorter = new javax.swing.table.TableRowSorter<>(defaultTableModel);
-        jTable1.setRowSorter(rowSorter);
-        
-        // Thêm các cột
-        defaultTableModel.addColumn("Customer ID");
-        defaultTableModel.addColumn("Fullname");
-        defaultTableModel.addColumn("Number");
-        defaultTableModel.addColumn("Email");
-        defaultTableModel.addColumn("Adress");
-        defaultTableModel.addColumn("Type");
+    jTable1.setModel(defaultTableModel);
+    rowSorter = new javax.swing.table.TableRowSorter<>(defaultTableModel);
+    jTable1.setRowSorter(rowSorter);
+    
+    // 1. PHẢI THÊM CÁC CỘT TRƯỚC
+    defaultTableModel.addColumn("Customer ID");
+    defaultTableModel.addColumn("Fullname");
+    defaultTableModel.addColumn("Number");
+    defaultTableModel.addColumn("Email");
+    defaultTableModel.addColumn("Adress");
+    defaultTableModel.addColumn("Type");
 
-        // Đổ dữ liệu lên bảng
-        setTableData(customerService.getAllUsers());
-            txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-                @Override
-                public void keyReleased(java.awt.event.KeyEvent evt) {
-                    String query = txtSearch.getText();
-                    filter(query);
-                }
-            });
+    // 2. BÂY GIỜ MỚI DÁN KHỐI QUẢN LÝ GIAO DIỆN BẢNG VÀO ĐÂY
+    // Căn giữa nội dung
+  
+// --- KHỐI QUẢN LÝ GIAO DIỆN BẢNG (FIX LỖI MẤT CỘT) ---
+
+// 1. Căn giữa nội dung
+javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+for (int i = 0; i < jTable1.getColumnCount(); i++) {
+    jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+}
+
+// 2. Thiết lập độ rộng và KHÓA chiều rộng tối thiểu (MinWidth)
+// Cột ID: Cố định nhỏ
+jTable1.getColumnModel().getColumn(0).setMinWidth(80);
+jTable1.getColumnModel().getColumn(0).setPreferredWidth(80);
+
+// Cột Fullname: Để tự co giãn nhưng tối thiểu 150
+jTable1.getColumnModel().getColumn(1).setMinWidth(150);
+jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
+
+// Cột Number: Tối thiểu 100
+jTable1.getColumnModel().getColumn(2).setMinWidth(100);
+jTable1.getColumnModel().getColumn(2).setPreferredWidth(100);
+
+// Cột Email: Tối thiểu 120
+jTable1.getColumnModel().getColumn(3).setMinWidth(120);
+jTable1.getColumnModel().getColumn(3).setPreferredWidth(120);
+
+// Cột Address: Đây là cột thường dài nhất, để nó chiếm chỗ còn lại
+jTable1.getColumnModel().getColumn(4).setMinWidth(150);
+jTable1.getColumnModel().getColumn(4).setPreferredWidth(200);
+
+// Cột Type: KHÓA cứng để không bị đẩy mất
+jTable1.getColumnModel().getColumn(5).setMinWidth(100);
+jTable1.getColumnModel().getColumn(5).setPreferredWidth(100);
+
+// 3. Tăng chiều cao hàng
+jTable1.setRowHeight(30);
+
+// 4. QUAN TRỌNG: Đảm bảo bảng không dồn hết vào các cột đầu
+jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+
+    jTable1.setRowHeight(30);
+
+    // Căn giữa Header
+    if (jTable1.getTableHeader().getDefaultRenderer() instanceof javax.swing.table.DefaultTableCellRenderer) {
+        ((javax.swing.table.DefaultTableCellRenderer) jTable1.getTableHeader().getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.JLabel.CENTER);
     }
 
+    // 3. CUỐI CÙNG LÀ ĐỔ DỮ LIỆU VÀ GẮN SỰ KIỆN SEARCH
+    setTableData(customerService.getAllUsers());
+    txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+        @Override
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+            String query = txtSearch.getText();
+            filter(query);
+        }
+    });
+}
     private void setTableData(List<Customer> customers) {
         defaultTableModel.setRowCount(0); 
 
@@ -148,29 +197,29 @@ public class CustomerFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(237, 237, 237)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(addButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 47, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(260, 260, 260)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(53, Short.MAX_VALUE))
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 714, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(77, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(addButton)
+                .addGap(240, 240, 240))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -182,7 +231,7 @@ public class CustomerFrame extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(addButton))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();

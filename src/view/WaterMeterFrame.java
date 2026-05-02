@@ -23,31 +23,74 @@ public class WaterMeterFrame extends javax.swing.JFrame {
      * Creates new form WaterMeterFrame1
      */
     public WaterMeterFrame() {
-        initComponents();
-        waterMeterService = new WaterMeterService();
+    initComponents();
+    waterMeterService = new WaterMeterService();
 
-        defaultTableModel = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Khóa không cho sửa trực tiếp trên bảng
-            }
-        };
+    // 1. Khởi tạo Model và khóa chỉnh sửa ô
+    defaultTableModel = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; 
+        }
+    };
 
-        jTable1.setModel(defaultTableModel);
+    jTable1.setModel(defaultTableModel);
 
-        // Định nghĩa các cột cho bảng Đồng hồ nước
-        defaultTableModel.addColumn("Water Meter ID");
-        defaultTableModel.addColumn("Customer ID");
-        defaultTableModel.addColumn("Instaltion Day");
-        defaultTableModel.addColumn("Type");
-        defaultTableModel.addColumn("Status");
-        
-        rowSorter = new javax.swing.table.TableRowSorter<>(defaultTableModel);
-        jTable1.setRowSorter(rowSorter);
+    // 2. Thêm các cột (Phải thêm trước khi chỉnh độ rộng)
+    defaultTableModel.addColumn("Water Meter ID");
+    defaultTableModel.addColumn("Customer ID");
+    defaultTableModel.addColumn("Installation Day"); // Sửa lỗi chính tả "Instaltion" thành "Installation"
+    defaultTableModel.addColumn("Type");
+    defaultTableModel.addColumn("Status");
+    
+    // 3. Thiết lập RowSorter để tìm kiếm
+    rowSorter = new javax.swing.table.TableRowSorter<>(defaultTableModel);
+    jTable1.setRowSorter(rowSorter);
 
-        // Gọi hàm đổ dữ liệu
-        setTableData(waterMeterService.getAllMeter());
+    // --- KHỐI QUẢN LÝ GIAO DIỆN BẢNG (Đồng bộ với CustomerFrame) ---
+
+    // A. Căn giữa toàn bộ các hàng
+    javax.swing.table.DefaultTableCellRenderer centerRenderer = new javax.swing.table.DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+    for (int i = 0; i < jTable1.getColumnCount(); i++) {
+        jTable1.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
     }
+
+    // B. Cấu hình độ rộng cột thông minh (Dùng setMinWidth để không bị che chữ)
+    // Cột 0: Water Meter ID
+    jTable1.getColumnModel().getColumn(0).setMinWidth(120);
+    jTable1.getColumnModel().getColumn(0).setPreferredWidth(120);
+
+    // Cột 1: Customer ID
+    jTable1.getColumnModel().getColumn(1).setMinWidth(100);
+    jTable1.getColumnModel().getColumn(1).setPreferredWidth(100);
+
+    // Cột 2: Installation Day
+    jTable1.getColumnModel().getColumn(2).setMinWidth(130);
+    jTable1.getColumnModel().getColumn(2).setPreferredWidth(150);
+
+    // Cột 3: Type
+    jTable1.getColumnModel().getColumn(3).setMinWidth(100);
+    jTable1.getColumnModel().getColumn(3).setPreferredWidth(100);
+
+    // Cột 4: Status
+    jTable1.getColumnModel().getColumn(4).setMinWidth(100);
+    jTable1.getColumnModel().getColumn(4).setPreferredWidth(100);
+
+    // C. Căn giữa tiêu đề bảng (Header)
+    if (jTable1.getTableHeader().getDefaultRenderer() instanceof javax.swing.table.DefaultTableCellRenderer) {
+        ((javax.swing.table.DefaultTableCellRenderer) jTable1.getTableHeader().getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.JLabel.CENTER);
+    }
+
+    // D. Tăng chiều cao hàng cho hiện đại
+    jTable1.setRowHeight(30);
+
+    // --- KẾT THÚC KHỐI QUẢN LÝ ---
+
+    // 4. Đổ dữ liệu lên bảng
+    setTableData(waterMeterService.getAllMeter());
+}
     private void setTableData(List<WaterMeter> meters) {
         defaultTableModel.setRowCount(0); // Xóa dữ liệu cũ trên bảng
 
@@ -108,7 +151,7 @@ public class WaterMeterFrame extends javax.swing.JFrame {
         addButton.addActionListener(this::addButtonActionPerformed);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("REQUEST PANEL");
+        jLabel1.setText("WATER METER PANEL");
 
         jLabel2.setText("Search:");
 
@@ -123,30 +166,30 @@ public class WaterMeterFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(170, 170, 170)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
-                        .addComponent(addButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(50, Short.MAX_VALUE))
+                        .addComponent(addButton)
+                        .addGap(145, 145, 145)))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -158,7 +201,7 @@ public class WaterMeterFrame extends javax.swing.JFrame {
                     .addComponent(jButton2)
                     .addComponent(addButton)
                     .addComponent(jButton1))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         pack();
