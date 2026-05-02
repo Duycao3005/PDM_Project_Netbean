@@ -42,91 +42,73 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        requestButton = new javax.swing.JButton();
-        billButton = new javax.swing.JButton();
-        paymentButton = new javax.swing.JButton();
-        mainContent = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         dashboardButton = new javax.swing.JButton();
         customerButton = new javax.swing.JButton();
         waterMeterButton = new javax.swing.JButton();
         usageButton = new javax.swing.JButton();
+        billButton = new javax.swing.JButton();
+        paymentButton = new javax.swing.JButton();
+        requestButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        mainContent = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        requestButton.setText("Request      ");
-        requestButton.addActionListener(this::requestButtonActionPerformed);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        dashboardButton.setText("Dashboard    ");
+        dashboardButton.addActionListener(this::dashboardButtonActionPerformed);
+        jPanel1.add(dashboardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, -1, -1));
+
+        customerButton.setText("Customer");
+        customerButton.addActionListener(this::customerButtonActionPerformed);
+        jPanel1.add(customerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 99, -1));
+
+        waterMeterButton.setText("Water Meter ");
+        waterMeterButton.addActionListener(this::waterMeterButtonActionPerformed);
+        jPanel1.add(waterMeterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 99, -1));
+
+        usageButton.setText("Usage");
+        usageButton.addActionListener(this::usageButtonActionPerformed);
+        jPanel1.add(usageButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 99, -1));
 
         billButton.setText("Bill");
         billButton.addActionListener(this::billButtonActionPerformed);
+        jPanel1.add(billButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 99, -1));
 
         paymentButton.setText("Payment ");
         paymentButton.addActionListener(this::paymentButtonActionPerformed);
+        jPanel1.add(paymentButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 260, 99, -1));
+
+        requestButton.setText("Request      ");
+        requestButton.addActionListener(this::requestButtonActionPerformed);
+        jPanel1.add(requestButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, 99, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imaga/Blue-Abstract-Background-For-You.jpg"))); // NOI18N
+        jLabel1.setText("jLabel1");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel1.setMaximumSize(new java.awt.Dimension(300, 300));
+        jLabel1.setMinimumSize(new java.awt.Dimension(222, 222));
+        jLabel1.setPreferredSize(new java.awt.Dimension(222, 333));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 370));
+
+        mainContent.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout mainContentLayout = new javax.swing.GroupLayout(mainContent);
         mainContent.setLayout(mainContentLayout);
         mainContentLayout.setHorizontalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 481, Short.MAX_VALUE)
+            .addGap(0, 710, Short.MAX_VALUE)
         );
         mainContentLayout.setVerticalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 356, Short.MAX_VALUE)
+            .addGap(0, 330, Short.MAX_VALUE)
         );
 
-        dashboardButton.setText("Dashboard    ");
-        dashboardButton.addActionListener(this::dashboardButtonActionPerformed);
+        jPanel1.add(mainContent, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 710, 330));
 
-        customerButton.setText("Customer");
-        customerButton.addActionListener(this::customerButtonActionPerformed);
-
-        waterMeterButton.setText("Water Meter ");
-        waterMeterButton.addActionListener(this::waterMeterButtonActionPerformed);
-
-        usageButton.setText("Usage");
-        usageButton.addActionListener(this::usageButtonActionPerformed);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(requestButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(paymentButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(billButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(customerButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(waterMeterButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(usageButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dashboardButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(45, 45, 45)
-                .addComponent(mainContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(320, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(dashboardButton)
-                        .addGap(30, 30, 30)
-                        .addComponent(customerButton)
-                        .addGap(23, 23, 23)
-                        .addComponent(waterMeterButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(usageButton)
-                        .addGap(29, 29, 29)
-                        .addComponent(billButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(paymentButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(requestButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(mainContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(223, Short.MAX_VALUE))
-        );
+        getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -196,6 +178,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton billButton;
     private javax.swing.JButton customerButton;
     private javax.swing.JButton dashboardButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel mainContent;
     private javax.swing.JButton paymentButton;
     private javax.swing.JButton requestButton;
