@@ -61,6 +61,8 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        dateSpinner = new javax.swing.JSpinner();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -78,6 +80,11 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel5.setText("Status:");
+        jLabel6.setText("Installation Date:");
+
+        dateSpinner.setModel(new javax.swing.SpinnerDateModel());
+        javax.swing.JSpinner.DateEditor de = new javax.swing.JSpinner.DateEditor(dateSpinner, "yyyy-MM-dd");
+        dateSpinner.setEditor(de);
 
         jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
@@ -121,6 +128,7 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
+                            .addComponent(jLabel6)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel2))
@@ -128,8 +136,7 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addGap(73, 73, 73))
+                                    .addGap(0, 0, 0))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jRadioButton3)
@@ -142,7 +149,8 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
                                             .addComponent(jRadioButton5))
                                         .addComponent(jRadioButton2))))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                                   .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                                   .addComponent(dateSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(77, 77, 77)
@@ -155,7 +163,6 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -166,15 +173,19 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton2))
-                .addGap(27, 27, 27)
+                    .addComponent(jLabel6)
+                    .addComponent(dateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                    .addComponent(jLabel4)
                     .addComponent(jRadioButton3)
                     .addComponent(jRadioButton4)
                     .addComponent(jRadioButton5))
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jRadioButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
@@ -207,6 +218,13 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
 
             // parse fields
             int customerId = Integer.parseInt(jTextField2.getText().trim());
+
+            // installation date from spinner
+            java.util.Date utilDate = (java.util.Date) dateSpinner.getValue();
+            if (utilDate != null) {
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                m.setInstallationDate(sqlDate);
+            }
 
             String type = "";
             if (jRadioButton3.isSelected()) type = "Analog";
@@ -242,6 +260,9 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         if (editingMeter == null) return;
         jTextField1.setText(String.valueOf(editingMeter.getMeterId()));
         jTextField2.setText(String.valueOf(editingMeter.getCustomerId()));
+
+        java.sql.Date inst = editingMeter.getInstallationDate();
+        if (inst != null) dateSpinner.setValue(new java.util.Date(inst.getTime()));
 
         String type = editingMeter.getMeterType();
         if ("Analog".equalsIgnoreCase(type)) jRadioButton3.setSelected(true);
@@ -288,6 +309,8 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JSpinner dateSpinner;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
