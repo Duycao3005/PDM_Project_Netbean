@@ -105,7 +105,7 @@ public class AddPayment extends javax.swing.JDialog {
                     .addComponent(jLabel6))
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
                     .addComponent(jTextField2)
                     .addComponent(jTextField1)
                     .addGroup(layout.createSequentialGroup()
@@ -201,20 +201,20 @@ public class AddPayment extends javax.swing.JDialog {
             else if (jRadioButton2.isSelected()) method = "Cash";
             else if (jRadioButton3.isSelected()) method = "Bank Transfer";
             else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn phương thức thanh toán!");
+                javax.swing.JOptionPane.showMessageDialog(this, "Please select payment method!");
                 return;
             }
 
             // Gọi hàm Add từ Service
             paymentService.addPayment(billId, dateString, amount, method);
             
-            javax.swing.JOptionPane.showMessageDialog(this, "Thêm thanh toán thành công!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Add payment succeed!");
             this.dispose(); // Đóng cửa sổ
 
         } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Bill ID và Số tiền phải là số hợp lệ!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Bill ID ad Amount must be correct!");
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

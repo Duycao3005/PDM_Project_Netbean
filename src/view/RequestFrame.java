@@ -37,13 +37,13 @@ public class RequestFrame extends javax.swing.JFrame {
 
         
         defaultTableModel.addColumn("ID");
-        defaultTableModel.addColumn("Mã KH");
-        defaultTableModel.addColumn("Mã NV");
-        defaultTableModel.addColumn("Loại yêu cầu");
-        defaultTableModel.addColumn("Mô tả");
-        defaultTableModel.addColumn("Trạng thái");
-        defaultTableModel.addColumn("Ngày tạo");
-        defaultTableModel.addColumn("Ngày xử lý");
+        defaultTableModel.addColumn("Customer ID");
+        defaultTableModel.addColumn("Employee ID");
+        defaultTableModel.addColumn("Request Type");
+        defaultTableModel.addColumn("Description");
+        defaultTableModel.addColumn("Status");
+        defaultTableModel.addColumn("Created Date");
+        defaultTableModel.addColumn("Processed Date");
 
        
         setTableData(requestService.getAllRequests());
@@ -63,12 +63,12 @@ public class RequestFrame extends javax.swing.JFrame {
             defaultTableModel.addRow(new Object[]{
                 r.getRequestId(),
                 r.getCustomerId(),
-                r.getEmployeeId() == null ? "Chưa có" : r.getEmployeeId(), // Xử lý nếu nhân viên NULL
+                r.getEmployeeId() == null ? "No employee Avaible" : r.getEmployeeId(), // Xử lý nếu nhân viên NULL
                 r.getRequestType(),
                 r.getDescription(),
                 r.getStatus(),
                 r.getDateCreated(),
-                r.getDateResolved() == null ? "Đang chờ" : r.getDateResolved()
+                r.getDateResolved() == null ? "Waiting" : r.getDateResolved()
             });
         }
     }
@@ -115,6 +115,7 @@ public class RequestFrame extends javax.swing.JFrame {
         addButton.setText("ADD");
         addButton.addActionListener(this::addButtonActionPerformed);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("REQUEST PANEL");
 
         jLabel2.setText("Search");
@@ -133,33 +134,33 @@ public class RequestFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(addButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(293, 293, 293)
-                        .addComponent(jLabel1)
-                        .addGap(97, 97, 97)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(13, 13, 13)
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtSearchPayment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(9, 9, 9)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(addButton)
                     .addComponent(jButton2))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
@@ -185,7 +186,7 @@ public class RequestFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow(); 
         if (selectedRow == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Chọn một dòng để sửa!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Select 1 row to update!");
             return;
         }
 
@@ -211,11 +212,11 @@ public class RequestFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow(); 
         if (selectedRow == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Chọn dòng để xóa!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Select this row to delete!");
             return;
         }
 
-        if (javax.swing.JOptionPane.showConfirmDialog(this, "Xóa yêu cầu này?", "Xác nhận", javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION) {
+        if (javax.swing.JOptionPane.showConfirmDialog(this, "Delete this request?", "Confirm", javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION) {
             int id = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
             requestService.deleteRequest(id);
             setTableData(requestService.getAllRequests()); 

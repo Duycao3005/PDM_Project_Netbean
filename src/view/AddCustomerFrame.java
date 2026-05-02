@@ -228,12 +228,12 @@ public class AddCustomerFrame extends javax.swing.JDialog {
             customerService.addCustomer(c);
 
             // 4. Thông báo thành công và tắt cửa sổ Thêm
-            javax.swing.JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Add Customer Succeed!");
             this.dispose(); 
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

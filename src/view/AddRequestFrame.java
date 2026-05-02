@@ -235,7 +235,7 @@ public class AddRequestFrame extends javax.swing.JDialog {
             else if (jCheckBox2.isSelected()) type = "Service Request";
             else if (jCheckBox3.isSelected()) type = "Meter Fault";
             else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn loại yêu cầu!");
+                javax.swing.JOptionPane.showMessageDialog(this, "Please select the request type!");
                 return;
             }
 
@@ -248,13 +248,13 @@ public class AddRequestFrame extends javax.swing.JDialog {
             // Gọi Service để thêm (Lưu ý phải viết hàm addRequest bên file RequestService nhận các tham số này)
             requestService.addRequest(custId, empId, type, desc, status, dateCreated);
             
-            javax.swing.JOptionPane.showMessageDialog(this, "Thêm yêu cầu thành công!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Add request succeed!");
             this.dispose();
 
         } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Mã KH và Mã NV phải là số!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Customer ID and Employee ID must be an interger!");
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_addButtonActionPerformed
 

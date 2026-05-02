@@ -222,7 +222,7 @@ public class UpdateCustomerFrame extends javax.swing.JDialog {
             else if (jRadioButton3.isSelected()) type = "INDUSTRIAL";
 
             if (name.trim().isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Tên khách hàng không được để trống!");
+                javax.swing.JOptionPane.showMessageDialog(this, "Customer name can not be empty!");
                 return;
             }
 
@@ -239,12 +239,12 @@ public class UpdateCustomerFrame extends javax.swing.JDialog {
             service.CustomerService customerService = new service.CustomerService();
             customerService.updateCustomer(c);
 
-            javax.swing.JOptionPane.showMessageDialog(this, "Cập nhật khách hàng thành công!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Update customer succeed!");
             this.dispose(); 
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

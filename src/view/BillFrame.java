@@ -39,13 +39,13 @@ public class BillFrame extends javax.swing.JFrame {
         jTable1.setModel(defaultTableModel);
 
         // Thêm các cột cho bảng Hóa đơn
-        defaultTableModel.addColumn("Mã HĐ");
-        defaultTableModel.addColumn("Mã Đồng Hồ");
-        defaultTableModel.addColumn("Kỳ Thu");
-        defaultTableModel.addColumn("Ngày Xuất");
-        defaultTableModel.addColumn("Hạn Chót");
-        defaultTableModel.addColumn("Tổng Tiền");
-        defaultTableModel.addColumn("Trạng Thái");
+        defaultTableModel.addColumn("Bill ID");
+        defaultTableModel.addColumn("Water Meter ID");
+        defaultTableModel.addColumn("Billing Period");
+        defaultTableModel.addColumn("Issue Date");
+        defaultTableModel.addColumn("Due Date");
+        defaultTableModel.addColumn("Total Amount");
+        defaultTableModel.addColumn("Status");
         
         setTableData(billService.getAllBills());
         txtSearchBill.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -110,7 +110,7 @@ public class BillFrame extends javax.swing.JFrame {
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("BILL");
+        jLabel1.setText("BILL PANEL");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -135,43 +135,44 @@ public class BillFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(152, 152, 152)
-                        .addComponent(jButton3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(addButton)
-                        .addGap(0, 511, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(186, 186, 186)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
                 .addGap(18, 18, 18)
-                .addComponent(txtSearchBill, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(99, 99, 99))
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(addButton)
+                .addGap(232, 232, 232))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(47, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSearchBill, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(53, 53, 53))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(txtSearchBill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
                     .addComponent(jButton1)
-                    .addComponent(addButton)
-                    .addComponent(jButton3))
-                .addContainerGap())
+                    .addComponent(addButton))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -191,7 +192,7 @@ public class BillFrame extends javax.swing.JFrame {
         // 1. Lấy vị trí dòng đang được chọn trong bảng
     int selectedRow = jTable1.getSelectedRow();
     if (selectedRow == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn trong bảng để xóa!", "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select one bill in the table to delete!", "Announcement", javax.swing.JOptionPane.WARNING_MESSAGE);
         return;
     }
 
@@ -199,18 +200,18 @@ public class BillFrame extends javax.swing.JFrame {
     int billId = (int) jTable1.getValueAt(selectedRow, 0);
 
     // 3. Hiển thị hộp thoại xác nhận
-    int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa hóa đơn mã " + billId + " không?", "Xác nhận xóa", javax.swing.JOptionPane.YES_NO_OPTION);
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Do you want to delete Bill  " + billId + "?", "Confirm delete", javax.swing.JOptionPane.YES_NO_OPTION);
     
     if (confirm == javax.swing.JOptionPane.YES_OPTION) {
         try {
             // Gọi Service để xóa
             billService.deleteBill(billId);
-            javax.swing.JOptionPane.showMessageDialog(this, "Xóa hóa đơn thành công!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Delete Bill succeed!");
             
             // Refresh lại bảng
             setTableData(billService.getAllBills()); 
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Không thể xóa hóa đơn này!\nChi tiết lỗi: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Can not delete this Bill!\nDetail Error: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -218,7 +219,7 @@ public class BillFrame extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         int selectedRow = jTable1.getSelectedRow();
     if (selectedRow == -1) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn trong bảng để sửa!", "Thông báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(this, "Please select one bill in the table to update!", "Announcement", javax.swing.JOptionPane.WARNING_MESSAGE);
         return;
     }
 

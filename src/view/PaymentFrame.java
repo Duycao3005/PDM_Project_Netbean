@@ -45,11 +45,11 @@ public class PaymentFrame extends javax.swing.JFrame {
         jTable1.setModel(defaultTableModel);
 
         // Thêm các cột cho bảng Thanh toán
-        defaultTableModel.addColumn("Mã thanh toán");
-        defaultTableModel.addColumn("Mã hóa đơn");
-        defaultTableModel.addColumn("Ngày thanh toán");
-        defaultTableModel.addColumn("Số tiền");
-        defaultTableModel.addColumn("Phương thức");
+        defaultTableModel.addColumn("Payment ID");
+        defaultTableModel.addColumn("Bill ID");
+        defaultTableModel.addColumn("Payment Date");
+        defaultTableModel.addColumn("Amount");
+        defaultTableModel.addColumn("Payment Method");
 
         // Đổ dữ liệu từ Service vào
         setTableData(paymentService.getAllPayments());
@@ -112,6 +112,7 @@ public class PaymentFrame extends javax.swing.JFrame {
         addButton.setText("ADD");
         addButton.addActionListener(this::addButtonActionPerformed);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("PAYMENT PANEL");
 
         jLabel2.setText("Search:");
@@ -123,31 +124,33 @@ public class PaymentFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(196, 196, 196)
+                        .addGap(226, 226, 226)
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
                         .addComponent(addButton))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(275, 275, 275)
-                        .addComponent(jLabel1)
-                        .addGap(109, 109, 109)
-                        .addComponent(jLabel2)
-                        .addGap(27, 27, 27)
-                        .addComponent(tb1Payment, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(82, Short.MAX_VALUE))
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(tb1Payment, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(13, 13, 13)
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(tb1Payment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(8, 8, 8)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -180,7 +183,7 @@ public class PaymentFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow(); 
         if (selectedRow == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Chọn một dòng để sửa!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Select a row to update!");
             return;
         }
 
@@ -206,14 +209,14 @@ public class PaymentFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int selectedRow = jTable1.getSelectedRow(); 
         if (selectedRow == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Chọn một dòng để xóa!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Select a row to delte!");
             return;
         }
 
-        if (javax.swing.JOptionPane.showConfirmDialog(this, "Xóa chứ?", "Xác nhận", javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION) {
+        if (javax.swing.JOptionPane.showConfirmDialog(this, "Do you want to delete?", "Confirm", javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION) {
             int id = Integer.parseInt(jTable1.getValueAt(selectedRow, 0).toString());
             paymentService.deletePayment(id);
-            javax.swing.JOptionPane.showMessageDialog(this, "Đã xóa!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Deleted!");
             setTableData(paymentService.getAllPayments()); 
         }
     }//GEN-LAST:event_jButton2ActionPerformed

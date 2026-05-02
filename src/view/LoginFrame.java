@@ -224,7 +224,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         // 1. Tối ưu UX: Bắt lỗi bỏ trống trước khi gọi Database cho nhẹ máy
         if (username.isEmpty() || password.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ Username và Password!", "Cảnh báo", javax.swing.JOptionPane.WARNING_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Please enter all the Username and Password!", "Warning", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -242,15 +242,15 @@ public class LoginFrame extends javax.swing.JFrame {
                     new view.MainFrame().setVisible(true); // Mở giao diện Admin
                 } else{
                     // new view.UserMainFrame().setVisible(true); // Mở giao diện User (sau này bạn tạo)
-                    new view.CustomerMainFrame(username).setVisible(true); // Tạm thời dùng chung để test
+                    new view.customer_UI(username).setVisible(true); // Tạm thời dùng chung để test
                 }
             } else {
                 // Đăng nhập sai
-                javax.swing.JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!", "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(this, "Incorrect Username or Password!", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi kết nối hệ thống!", "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "System connection error!", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         } 
         
     }//GEN-LAST:event_Login_buttonActionPerformed

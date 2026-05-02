@@ -93,10 +93,10 @@ public class UpdateRequestFrame extends javax.swing.JFrame {
             String desc = txtDesc.getText();
 
             requestService.updateRequest(requestId, status, desc);
-            javax.swing.JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Update succeed!");
             this.dispose();
         } catch (HeadlessException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 

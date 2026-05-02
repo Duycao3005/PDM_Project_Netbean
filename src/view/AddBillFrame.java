@@ -239,21 +239,21 @@ public void setBillToUpdate(model.Bill bill) {
         if (this.currentBillId == null) {
             // Chế độ THÊM MỚI
             service.addBill(newBill);
-            javax.swing.JOptionPane.showMessageDialog(this, "Thêm hóa đơn thành công!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Add Bill Succeed!");
         } else {
             // Chế độ CẬP NHẬT
             newBill.setBillId(this.currentBillId); // Gắn ID cũ vào để Update
             service.updateBill(newBill);
-            javax.swing.JOptionPane.showMessageDialog(this, "Cập nhật hóa đơn thành công!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Update Bill Succeed!");
         }
 
         // 4. Đóng form (KHÔNG CÒN dòng thông báo dư thừa ở đây nữa)
         this.dispose(); 
 
     } catch (NumberFormatException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số cho Meter ID và Total!", "Lỗi nhập liệu", javax.swing.JOptionPane.ERROR_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(this, "Input the right type for Meter ID and Total!", "Type Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", javax.swing.JOptionPane.ERROR_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }    // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 

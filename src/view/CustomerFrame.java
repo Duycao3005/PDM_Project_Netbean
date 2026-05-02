@@ -44,12 +44,12 @@ public class CustomerFrame extends javax.swing.JFrame {
         jTable1.setRowSorter(rowSorter);
         
         // Thêm các cột
-        defaultTableModel.addColumn("Mã KH");
-        defaultTableModel.addColumn("Họ Tên");
-        defaultTableModel.addColumn("Số ĐT");
+        defaultTableModel.addColumn("Customer ID");
+        defaultTableModel.addColumn("Fullname");
+        defaultTableModel.addColumn("Number");
         defaultTableModel.addColumn("Email");
-        defaultTableModel.addColumn("Địa Chỉ");
-        defaultTableModel.addColumn("Loại KH");
+        defaultTableModel.addColumn("Adress");
+        defaultTableModel.addColumn("Type");
 
         // Đổ dữ liệu lên bảng
         setTableData(customerService.getAllUsers());
@@ -157,14 +157,14 @@ public class CustomerFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 47, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(260, 260, 260)
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -176,13 +176,13 @@ public class CustomerFrame extends javax.swing.JFrame {
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(addButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -195,14 +195,14 @@ public class CustomerFrame extends javax.swing.JFrame {
 
         // Nếu chưa chọn dòng nào mà bấm Xóa thì báo lỗi
         if (selectedRow == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng click chọn một khách hàng trên bảng để xóa!");
+            javax.swing.JOptionPane.showMessageDialog(this, "Select one customer to delect!");
             return;
         }
 
         // 2. Hiện hộp thoại hỏi xác nhận cho an toàn
         int confirm = javax.swing.JOptionPane.showConfirmDialog(this, 
-                "Bạn có chắc chắn muốn xóa khách hàng này không? Mọi hóa đơn liên quan cũng sẽ bị xóa theo!", 
-                "Xác nhận xóa", 
+                "Do you want to delete this customer? All the bill will be deleted too!", 
+                "Confirm", 
                 javax.swing.JOptionPane.YES_NO_OPTION);
                 
         if (confirm == javax.swing.JOptionPane.YES_OPTION) {
@@ -214,12 +214,12 @@ public class CustomerFrame extends javax.swing.JFrame {
                 customerService.deleteCustomer(customerId);
 
                 // 5. Báo thành công và Tự động làm mới bảng
-                javax.swing.JOptionPane.showMessageDialog(this, "Xóa khách hàng thành công!");
+                javax.swing.JOptionPane.showMessageDialog(this, "Delete succeed!");
                 setTableData(customerService.getAllUsers()); // Nhớ đổi tên hàm này thành hàm vẽ bảng của bạn
 
             } catch (Exception e) {
                 e.printStackTrace();
-                javax.swing.JOptionPane.showMessageDialog(this, "Lỗi khi xóa: " + e.getMessage());
+                javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
             }
         }// TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
