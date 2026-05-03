@@ -21,6 +21,7 @@ public class customer_UI extends javax.swing.JFrame {
      */
     public customer_UI(String username) {
         initComponents();
+        this.setTitle("Water Management System Customer");
         this.loggedInUser = username;
         jTable1.setRowHeight(30);
 jTable1.setShowGrid(false);
