@@ -18,7 +18,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        this.setTitle("Water Management system");
+        this.setTitle("Water Management System Empolyee");
     }
     private void showView(javax.swing.JFrame frame) {
     // 1. Xóa toàn bộ những gì đang hiện ở vùng bên phải (mainContent)
@@ -56,36 +56,72 @@ public class MainFrame extends javax.swing.JFrame {
         mainContent = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        dashboardButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        dashboardButton.setForeground(new java.awt.Color(51, 51, 51));
         dashboardButton.setText("Dashboard    ");
+        dashboardButton.setAlignmentY(1.0F);
+        dashboardButton.setHideActionText(true);
+        dashboardButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         dashboardButton.addActionListener(this::dashboardButtonActionPerformed);
-        jPanel1.add(dashboardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, -1, -1));
+        jPanel1.add(dashboardButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 110, -1));
 
+        customerButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        customerButton.setForeground(new java.awt.Color(51, 51, 51));
         customerButton.setText("Customer");
+        customerButton.setAlignmentY(1.0F);
+        customerButton.setHideActionText(true);
+        customerButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         customerButton.addActionListener(this::customerButtonActionPerformed);
-        jPanel1.add(customerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 99, -1));
+        jPanel1.add(customerButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 110, -1));
 
+        waterMeterButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        waterMeterButton.setForeground(new java.awt.Color(51, 51, 51));
         waterMeterButton.setText("Water Meter ");
+        waterMeterButton.setAlignmentY(1.0F);
+        waterMeterButton.setHideActionText(true);
+        waterMeterButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         waterMeterButton.addActionListener(this::waterMeterButtonActionPerformed);
-        jPanel1.add(waterMeterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 99, -1));
+        jPanel1.add(waterMeterButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 110, -1));
 
+        usageButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        usageButton.setForeground(new java.awt.Color(51, 51, 51));
         usageButton.setText("Usage");
+        usageButton.setAlignmentY(1.0F);
+        usageButton.setHideActionText(true);
+        usageButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         usageButton.addActionListener(this::usageButtonActionPerformed);
-        jPanel1.add(usageButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 99, -1));
+        jPanel1.add(usageButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 110, -1));
 
+        billButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        billButton.setForeground(new java.awt.Color(51, 51, 51));
         billButton.setText("Bill");
+        billButton.setAlignmentY(1.0F);
+        billButton.setHideActionText(true);
+        billButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         billButton.addActionListener(this::billButtonActionPerformed);
-        jPanel1.add(billButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 99, -1));
+        jPanel1.add(billButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 110, -1));
 
+        paymentButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        paymentButton.setForeground(new java.awt.Color(51, 51, 51));
         paymentButton.setText("Payment ");
+        paymentButton.setAlignmentY(1.0F);
+        paymentButton.setHideActionText(true);
+        paymentButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         paymentButton.addActionListener(this::paymentButtonActionPerformed);
-        jPanel1.add(paymentButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 260, 99, -1));
+        jPanel1.add(paymentButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 110, -1));
 
-        requestButton.setText("Request      ");
+        requestButton.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        requestButton.setForeground(new java.awt.Color(51, 51, 51));
+        requestButton.setText("  Request      ");
+        requestButton.setAlignmentY(1.0F);
+        requestButton.setHideActionText(true);
+        requestButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         requestButton.addActionListener(this::requestButtonActionPerformed);
-        jPanel1.add(requestButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, 99, -1));
+        jPanel1.add(requestButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, 110, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imaga/Blue-Abstract-Background-For-You.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -93,24 +129,25 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setMaximumSize(new java.awt.Dimension(300, 300));
         jLabel1.setMinimumSize(new java.awt.Dimension(222, 222));
         jLabel1.setPreferredSize(new java.awt.Dimension(222, 333));
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-48, -30, 280, 480));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 450));
 
+        mainContent.setAlignmentY(1.0F);
         mainContent.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         javax.swing.GroupLayout mainContentLayout = new javax.swing.GroupLayout(mainContent);
         mainContent.setLayout(mainContentLayout);
         mainContentLayout.setHorizontalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 750, Short.MAX_VALUE)
+            .addGap(0, 780, Short.MAX_VALUE)
         );
         mainContentLayout.setVerticalGroup(
             mainContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 450, Short.MAX_VALUE)
         );
 
-        jPanel1.add(mainContent, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 0, 750, 450));
+        jPanel1.add(mainContent, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, 780, 450));
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1021, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

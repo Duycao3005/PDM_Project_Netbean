@@ -39,7 +39,7 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         this(parent, modal, service);
         this.editingMeter = meter;
         populateFieldsFromMeter();
-        jButton2.setText("UPDATE");
+        addButton.setText("UPDATE");
     }
 
     // 3. Hàm khởi tạo phụ để NetBeans Design không báo lỗi
@@ -61,8 +61,6 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        dateSpinner = new javax.swing.JSpinner();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jRadioButton1 = new javax.swing.JRadioButton();
@@ -71,7 +69,7 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         jRadioButton4 = new javax.swing.JRadioButton();
         jRadioButton5 = new javax.swing.JRadioButton();
         cancelButton = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        addButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -80,11 +78,6 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel5.setText("Status:");
-        jLabel6.setText("Installation Date:");
-
-        dateSpinner.setModel(new javax.swing.SpinnerDateModel());
-        javax.swing.JSpinner.DateEditor de = new javax.swing.JSpinner.DateEditor(dateSpinner, "yyyy-MM-dd");
-        dateSpinner.setEditor(de);
 
         jTextField1.addActionListener(this::jTextField1ActionPerformed);
 
@@ -107,9 +100,9 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(this::cancelButtonActionPerformed);
 
-        jButton2.setText("ADD");
-        jButton2.addActionListener(this::addOrUpdateActionPerformed);
+        addButton.setText("ADD");
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("ADD WATER METER");
 
         jLabel2.setText("Meter ID:");
@@ -125,10 +118,9 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel6)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel2))
@@ -136,7 +128,8 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGap(0, 0, 0))
+                                    .addComponent(jLabel1)
+                                    .addGap(73, 73, 73))
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jRadioButton3)
@@ -149,20 +142,20 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
                                             .addComponent(jRadioButton5))
                                         .addComponent(jRadioButton2))))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                   .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                                   .addComponent(dateSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING))))
+                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
+                        .addGap(78, 78, 78)
                         .addComponent(cancelButton)
                         .addGap(38, 38, 38)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -173,24 +166,20 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(dateSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jRadioButton3)
-                    .addComponent(jRadioButton4)
-                    .addComponent(jRadioButton5))
+                    .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jRadioButton2))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                    .addComponent(jRadioButton3)
+                    .addComponent(jRadioButton4)
+                    .addComponent(jRadioButton5))
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(addButton)
                     .addComponent(cancelButton))
-                .addContainerGap())
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -220,7 +209,7 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
             int customerId = Integer.parseInt(jTextField2.getText().trim());
 
             // installation date from spinner
-            java.util.Date utilDate = (java.util.Date) dateSpinner.getValue();
+            java.util.Date utilDate = (java.util.Date) addButton.getValue();
             if (utilDate != null) {
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
                 m.setInstallationDate(sqlDate);
@@ -262,7 +251,7 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
         jTextField2.setText(String.valueOf(editingMeter.getCustomerId()));
 
         java.sql.Date inst = editingMeter.getInstallationDate();
-        if (inst != null) dateSpinner.setValue(new java.util.Date(inst.getTime()));
+        if (inst != null) addButton.setValue(new java.util.Date(inst.getTime()));
 
         String type = editingMeter.getMeterType();
         if ("Analog".equalsIgnoreCase(type)) jRadioButton3.setSelected(true);
@@ -300,17 +289,15 @@ public class AddWaterMeterFrame extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addButton;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JSpinner dateSpinner;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;

@@ -1,32 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
-/**
- *
- * @author ThinkPad
- */
-public class DashBoardFrame extends javax.swing.JFrame {
+import javax.swing.border.AbstractBorder;
+import java.awt.*;
 
-    
-    
-    
+public class DashBoardFrame extends javax.swing.JFrame {
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DashBoardFrame.class.getName());
     public void refreshStatistics() {
         try {
             service.CustomerService customerService = new service.CustomerService();
             service.BillService billService = new service.BillService();
             service.PaymentService paymentService = new service.PaymentService();
             service.RequestService requestService = new service.RequestService();
+            
             int totalBills = billService.getTotalBillCount();
             int unpaidBills = billService.getUnpaidBillCount();
             
-            // Cập nhật các con số cũ
             jLabel5.setText(String.valueOf(customerService.getCustomerCount()));
-            lblTotalBills.setText(String.valueOf(billService.getUnpaidCount()));
             
-            // Cập nhật Revenue (Định dạng số tiền có dấu $)
             double revenue = paymentService.getTotalRevenue();
             jLabel6.setText("$" + String.format("%.2f", revenue));
             
@@ -34,32 +24,54 @@ public class DashBoardFrame extends javax.swing.JFrame {
             lblUnpaidBills.setText(unpaidBills + " Unpaid");
             lblUnpaidBills.setForeground(java.awt.Color.RED);
             
-            // Cập nhật Pending Requests
             jLabel8.setText(String.valueOf(requestService.getPendingRequestCount()));
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DashBoardFrame.class.getName());
 
-    /**
-     * Creates new form DashBoardFrame1
-     */
     public DashBoardFrame() {
-        initComponents();
+        initComponents(); // Khởi tạo UI từ NetBeans
+
+        // 1. Tạo Border nét đứt
+        AbstractBorder dashedBorder = new AbstractBorder() {
+            @Override
+            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setColor(new Color(0, 102, 204)); // Màu xanh thương hiệu của bạn
+                
+                float[] dash = {10f, 5f}; 
+                g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0, dash, 0));
+                
+                // Vẽ khung thụt vào 2px để nét vẽ không bị mất
+                g2d.drawRect(x + 2, y + 2, width - 5, height - 5);
+                g2d.dispose();
+            }
+        };
+
+        // 2. Áp dụng vào jPanel1
+        if (jPanel1 != null) {
+            jPanel1.setBorder(dashedBorder);
+            jPanel1.setOpaque(false);
+        }
+
+        // 3. Tự động cập nhật dữ liệu khi mở
         refreshStatistics();
+
+        // 4. Lắng nghe sự kiện focus để tự động update dữ liệu khi quay lại dashboard
         this.addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-    @Override
-    public void windowGainedFocus(java.awt.event.WindowEvent e) {
-        // Mỗi khi cửa sổ Dashboard được người dùng click chọn lại, nó sẽ tự update
-        
+            @Override
+            public void windowGainedFocus(java.awt.event.WindowEvent e) {
+                refreshStatistics();
+            }
+            @Override
+            public void windowLostFocus(java.awt.event.WindowEvent e) {}
+        });
     }
-    @Override
-    public void windowLostFocus(java.awt.event.WindowEvent e) {}
-});
-    }
+
+    // Các phần code initComponents() và main bên dưới giữ nguyên...
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -70,6 +82,7 @@ public class DashBoardFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -82,71 +95,94 @@ public class DashBoardFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Pending:");
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Customers: ");
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Revenue:");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Bills:");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("jLabel5");
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("jLabel6");
 
+        lblTotalBills.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTotalBills.setText("jLabel7");
 
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("jLabel8");
 
+        lblUnpaidBills.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblUnpaidBills.setText("jLabel7");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(66, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(197, 197, 197))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblTotalBills, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblUnpaidBills, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5))
+                .addGap(30, 30, 30))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lblTotalBills)
+                    .addComponent(lblUnpaidBills))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel8))
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(134, 134, 134)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblTotalBills)
-                                .addGap(31, 31, 31)
-                                .addComponent(lblUnpaidBills))
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5))
-                        .addGap(56, 56, Short.MAX_VALUE))))
+                .addGap(135, 135, 135)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(470, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel6))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(lblTotalBills)
-                    .addComponent(lblUnpaidBills))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel8))
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 50, Short.MAX_VALUE))
         );
 
         pack();
@@ -185,6 +221,7 @@ public class DashBoardFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblTotalBills;
     private javax.swing.JLabel lblUnpaidBills;
     // End of variables declaration//GEN-END:variables
