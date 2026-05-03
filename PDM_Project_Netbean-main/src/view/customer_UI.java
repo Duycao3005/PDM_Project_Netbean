@@ -1,5 +1,5 @@
-
 package view;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -8,14 +8,16 @@ import javax.swing.UIManager;
 import java.awt.CardLayout;
 import javax.swing.*;
 import java.awt.*;
+
 /**
  *
  * @author Admin
  */
 public class customer_UI extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(customer_UI.class.getName());
     private String loggedInUser;
+
     /**
      * Creates new form customer_UI
      */
@@ -23,77 +25,78 @@ public class customer_UI extends javax.swing.JFrame {
         initComponents();
         this.loggedInUser = username;
         jTable1.setRowHeight(30);
-jTable1.setShowGrid(false);
-jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0));
-Main_Panel.add(Bill_Panel, "BILL");
-Main_Panel.add(Wate_usagge_information_Panel, "WATER");
-Main_Panel.add(Payment_Panel, "PAYMENT");
-Main_Panel.add(Feedback_Panel, "FEEDBACK");
-Main_Panel.add(Detail_information_Panel, "INFO");
-jTextField11.setEditable(false);
-jTextField12.setEditable(false);
-jTextField13.setEditable(false);
-jTextField14.setEditable(false);
-jTextField15.setEditable(false);
-jTextField16.setEditable(false);
-jTextField18.setEditable(false);
-jTextField19.setEditable(false);
-jTextField20.setEditable(false);
-jTextField21.setEditable(false);    
-jTextField22.setEditable(false);
-jTextField23.setEditable(false); 
-jTextField24.setEditable(false);
-jTextField11.setFocusable(false);
-jTextField12.setFocusable(false);
-jTextField13.setFocusable(false);
-jTextField14.setFocusable(false);
-jTextField15.setFocusable(false);
-jTextField16.setFocusable(false);
-jTextField18.setFocusable(false);
-jTextField19.setFocusable(false);
-jTextField20.setFocusable(false);
-jTextField21.setFocusable(false);
-jTextField22.setFocusable(false);
-jTextField23.setFocusable(false);
-jTextField24.setFocusable(false);
+        jTable1.setShowGrid(false);
+        jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0));
+        Main_Panel.add(Bill_Panel, "BILL");
+        Main_Panel.add(Wate_usagge_information_Panel, "WATER");
+        Main_Panel.add(Payment_Panel, "PAYMENT");
+        Main_Panel.add(Feedback_Panel, "FEEDBACK");
+        Main_Panel.add(Detail_information_Panel, "INFO");
+        jTextField11.setEditable(false);
+        jTextField12.setEditable(false);
+        jTextField13.setEditable(false);
+        jTextField14.setEditable(false);
+        jTextField15.setEditable(false);
+        jTextField16.setEditable(false);
+        jTextField18.setEditable(false);
+        jTextField19.setEditable(false);
+        jTextField20.setEditable(false);
+        jTextField21.setEditable(false);
+        jTextField22.setEditable(false);
+        jTextField23.setEditable(false);
+        jTextField24.setEditable(false);
+        jTextField11.setFocusable(false);
+        jTextField12.setFocusable(false);
+        jTextField13.setFocusable(false);
+        jTextField14.setFocusable(false);
+        jTextField15.setFocusable(false);
+        jTextField16.setFocusable(false);
+        jTextField18.setFocusable(false);
+        jTextField19.setFocusable(false);
+        jTextField20.setFocusable(false);
+        jTextField21.setFocusable(false);
+        jTextField22.setFocusable(false);
+        jTextField23.setFocusable(false);
+        jTextField24.setFocusable(false);
 
 // Bỏ viền tập trung và làm phẳng nút
-Information_Buttom.putClientProperty("JButton.buttonType", "tab");
-Information_Buttom.putClientProperty("JButton.arc", 10); // Bo góc 10px
+        Information_Buttom.putClientProperty("JButton.buttonType", "tab");
+        Information_Buttom.putClientProperty("JButton.arc", 10); // Bo góc 10px
 
 // Nếu muốn căn trái toàn bộ text và icon (thường đẹp hơn cho sidebar)
-Information_Buttom.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-Information_Buttom.setIconTextGap(20);
-Information_Buttom.setMargin(new java.awt.Insets(0, 20, 0, 0));
-jTable1.setShowVerticalLines(false);
-    jTable1.setShowHorizontalLines(true);
-    // Thêm vào trong hàm styleTable
-jTable1.putClientProperty("Table.alternateRowColor", new java.awt.Color(245, 245, 245));
-jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-jScrollPane1.setViewportBorder(null);
+        Information_Buttom.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Information_Buttom.setIconTextGap(20);
+        Information_Buttom.setMargin(new java.awt.Insets(0, 20, 0, 0));
+        jTable1.setShowVerticalLines(false);
+        jTable1.setShowHorizontalLines(true);
+        // Thêm vào trong hàm styleTable
+        jTable1.putClientProperty("Table.alternateRowColor", new java.awt.Color(245, 245, 245));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        jScrollPane1.setViewportBorder(null);
 // Thêm vào Constructor của customer_UI
-jTextArea1.putClientProperty("JTextField.placeholderText", "Hãy chia sẻ ý kiến hoặc vấn đề của bạn tại đây...");
-jTextArea1.putClientProperty("Component.arc", 20); // Bo góc khung nhập liệu
-jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Tạo khoảng trống lề trong
-jTextArea1.setBackground(new java.awt.Color(250, 250, 250)); // Màu trắng sứ
+        jTextArea1.putClientProperty("JTextField.placeholderText", "Hãy chia sẻ ý kiến hoặc vấn đề của bạn tại đây...");
+        jTextArea1.putClientProperty("Component.arc", 20); // Bo góc khung nhập liệu
+        jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Tạo khoảng trống lề trong
+        jTextArea1.setBackground(new java.awt.Color(250, 250, 250)); // Màu trắng sứ
 // Cấu hình cho Send_Buttom
-jButton3.putClientProperty("JButton.buttonType", "roundRect"); // Nút bo tròn hoàn toàn
-jButton3.putClientProperty("FlatLaf.style", "background: #1A305E; foreground: #FFFFFF"); // Màu xanh đậm đồng bộ sidebar
-jButton3.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16));
-jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR)); // Đổi con trỏ khi di qua
+        jButton3.putClientProperty("JButton.buttonType", "roundRect"); // Nút bo tròn hoàn toàn
+        jButton3.putClientProperty("FlatLaf.style", "background: #1A305E; foreground: #FFFFFF"); // Màu xanh đậm đồng bộ sidebar
+        jButton3.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16));
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR)); // Đổi con trỏ khi di qua
 // Giả sử Panel của bạn tên là Feedback_Container_Panel
-jPanel10.setOpaque(true);
-jPanel10.setBackground(Color.WHITE);
+        jPanel10.setOpaque(true);
+        jPanel10.setBackground(Color.WHITE);
 
-jPanel12.setOpaque(true);
-jPanel12.setBackground(Color.WHITE);
-jPanel10.putClientProperty("FlatLaf.style", "arc: 30");
-jPanel11.putClientProperty("FlatLaf.style", "arc: 30");
-jPanel12.putClientProperty("FlatLaf.style", "arc: 30");
-jPanel10.putClientProperty("FlatLaf.style", "arc: 30");
-jPanel12.putClientProperty("FlatLaf.style", "arc: 30");
+        jPanel12.setOpaque(true);
+        jPanel12.setBackground(Color.WHITE);
+        jPanel10.putClientProperty("FlatLaf.style", "arc: 30");
+        jPanel11.putClientProperty("FlatLaf.style", "arc: 30");
+        jPanel12.putClientProperty("FlatLaf.style", "arc: 30");
+        jPanel10.putClientProperty("FlatLaf.style", "arc: 30");
+        jPanel12.putClientProperty("FlatLaf.style", "arc: 30");
 
-    }    
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -107,6 +110,7 @@ jPanel12.putClientProperty("FlatLaf.style", "arc: 30");
         Feedback_Buttom = new javax.swing.JButton();
         Payment_Buttom = new javax.swing.JButton();
         jLabel40 = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JToggleButton();
         Main_Panel = new javax.swing.JPanel();
         Detail_information_Panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -235,12 +239,17 @@ jPanel12.putClientProperty("FlatLaf.style", "arc: 30");
         jLabel40.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imaga/image-removebg-preview (2).png"))); // NOI18N
         jLabel40.setOpaque(true);
 
+        btnLogout.setBackground(new java.awt.Color(0, 51, 102));
+        btnLogout.setIcon(new javax.swing.ImageIcon("C:\\Users\\thqgp\\Downloads\\download (1).png")); // NOI18N
+        btnLogout.addActionListener(this::btnLogoutActionPerformed);
+
         jLayeredPane1.setLayer(Bill_Buttom, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(Information_Buttom, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(Water_usage_Buttom, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(Feedback_Buttom, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(Payment_Buttom, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jLabel40, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane1.setLayer(btnLogout, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -251,7 +260,8 @@ jPanel12.putClientProperty("FlatLaf.style", "arc: 30");
             .addComponent(Bill_Buttom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(Payment_Buttom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(Feedback_Buttom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+            .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jLayeredPane1Layout.setVerticalGroup(
             jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,7 +275,9 @@ jPanel12.putClientProperty("FlatLaf.style", "arc: 30");
                 .addComponent(Payment_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Feedback_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -705,11 +717,6 @@ jPanel12.putClientProperty("FlatLaf.style", "arc: 30");
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Bill_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bill_ButtomActionPerformed
-CardLayout card = (CardLayout) Main_Panel.getLayout();
-        card.show(Main_Panel,"BILL");// TODO add your handling code here:
-    }//GEN-LAST:event_Bill_ButtomActionPerformed
-
     private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField11ActionPerformed
@@ -729,12 +736,6 @@ CardLayout card = (CardLayout) Main_Panel.getLayout();
     private void jTextField15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField15ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField15ActionPerformed
-
-    private void Water_usage_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Water_usage_ButtomActionPerformed
-CardLayout card = (CardLayout) Main_Panel.getLayout();
-        card.show(Main_Panel, "WATER");       
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Water_usage_ButtomActionPerformed
 
     private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
         // TODO add your handling code here:
@@ -776,20 +777,47 @@ CardLayout card = (CardLayout) Main_Panel.getLayout();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void Information_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Information_ButtomActionPerformed
-CardLayout card = (CardLayout) Main_Panel.getLayout();
-        card.show(Main_Panel, "INFO");        // TODO add your handling code here:
-    }//GEN-LAST:event_Information_ButtomActionPerformed
+    private void Payment_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Payment_ButtomActionPerformed
+        CardLayout card = (CardLayout) Main_Panel.getLayout();
+        card.show(Main_Panel, "PAYMENT");        // TODO add your handling code here:
+    }//GEN-LAST:event_Payment_ButtomActionPerformed
 
     private void Feedback_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Feedback_ButtomActionPerformed
-CardLayout card = (CardLayout) Main_Panel.getLayout();
+        CardLayout card = (CardLayout) Main_Panel.getLayout();
         card.show(Main_Panel, "FEEDBACK");  // TODO add your handling code here:
     }//GEN-LAST:event_Feedback_ButtomActionPerformed
 
-    private void Payment_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Payment_ButtomActionPerformed
-CardLayout card = (CardLayout) Main_Panel.getLayout();
-        card.show(Main_Panel, "PAYMENT");        // TODO add your handling code here:
-    }//GEN-LAST:event_Payment_ButtomActionPerformed
+    private void Water_usage_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Water_usage_ButtomActionPerformed
+        CardLayout card = (CardLayout) Main_Panel.getLayout();
+        card.show(Main_Panel, "WATER");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Water_usage_ButtomActionPerformed
+
+    private void Information_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Information_ButtomActionPerformed
+        CardLayout card = (CardLayout) Main_Panel.getLayout();
+        card.show(Main_Panel, "INFO");        // TODO add your handling code here:
+    }//GEN-LAST:event_Information_ButtomActionPerformed
+
+    private void Bill_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Bill_ButtomActionPerformed
+        CardLayout card = (CardLayout) Main_Panel.getLayout();
+        card.show(Main_Panel, "BILL");// TODO add your handling code here:
+    }//GEN-LAST:event_Bill_ButtomActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // Hiển thị hộp thoại xác nhận
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+                "Bạn có chắc chắn muốn đăng xuất không?",
+                "Xác nhận",
+                javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            // 1. Đóng màn hình hiện tại
+            this.dispose();
+
+            // 2. Mở lại màn hình Login (Thay 'LoginFrame' bằng tên file đăng nhập của bạn)
+            new LoginFrame().setVisible(true);
+        }     // TODO add your handling code here:
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -811,7 +839,7 @@ CardLayout card = (CardLayout) Main_Panel.getLayout();
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-      
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new customer_UI("test").setVisible(true));
@@ -829,6 +857,7 @@ CardLayout card = (CardLayout) Main_Panel.getLayout();
     private javax.swing.JPanel Payment_Panel;
     private javax.swing.JPanel Wate_usagge_information_Panel;
     private javax.swing.JButton Water_usage_Buttom;
+    private javax.swing.JToggleButton btnLogout;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
