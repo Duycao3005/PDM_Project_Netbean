@@ -9,10 +9,14 @@
             <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/RequestFrame.java</file>
             <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/service/RequestService.java</file>
             <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/DAO/RequestDao.java</file>
-            <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/DAO/JDBCConnection.java</file>
             <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/MainFrame.java</file>
             <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/CustomerFrame.java</file>
-            <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/DashBoardFrame.java</file>
+            <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/AddUsageFrame.java</file>
+            <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/AddRequestFrame.java</file>
+            <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/AddPayment.java</file>
+            <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/AddCustomerFrame.java</file>
+            <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/AddBillFrame.java</file>
+            <file>file:/C:/Users/thqgp/Downloads/PDM_Project_Netbean-main/PDM_Project_Netbean-main/src/view/customer_UI.java</file>
         </group>
     </open-files>
 </project-private>
